@@ -22,9 +22,6 @@ urlpatterns = [
     path('', views.homepage, name='homepage'),
     path('registro/', views.register, name='registro'),
     path('reset-password/', views.reset_password, name='reset_password'),
-<<<<<<< HEAD
     path('admin/', admin.site.urls),
-=======
->>>>>>> b871130ef889424cee15c12dcabd3b5b046e79f5
 
 ]
