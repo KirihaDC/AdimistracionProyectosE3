@@ -1,0 +1,2 @@
+Django==3.2.7
+mysqlclient==2.1.0   # Este es el conector MySQL para Django, que también es compatible con MariaDB
