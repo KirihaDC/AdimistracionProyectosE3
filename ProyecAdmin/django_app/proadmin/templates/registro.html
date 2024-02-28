@@ -282,13 +282,14 @@ input[type=text]:placeholder {
             <h2 class="active" style="color: black;"><a href="{% url 'registro' %}" style="color: black;">Registrarse</a></h2>
     
             <!-- Registration Form -->
-            <form id="loginForm">
-                <input type="text" id="email" class="fadeIn second" name="email" placeholder="Correo Electrónico">
-                <input type="text" id="username" class="fadeIn third" name="username" placeholder="Usuario">
-                <input type="text" id="password_reg" class="fadeIn third" name="password_reg" placeholder="Contraseña">
-                <input type="text" id="confirm_password" class="fadeIn third" name="confirm_password" placeholder="Confirmar Contraseña">
-                <input type="submit" class="fadeIn fourth" value="Registrarse">
-            </form>
+            <form action="{% url 'registro' %}" method="post" id="loginForm">
+              {% csrf_token %}
+              <input type="text" id="email" class="fadeIn second" name="correo" placeholder="Correo Electrónico">
+              <input type="text" id="username" class="fadeIn third" name="nombre_usuario" placeholder="Usuario">
+              <input type="text" id="password_reg" class="fadeIn third" name="contraseña" placeholder="Contraseña">
+              <input type="text" id="confirm_password" class="fadeIn third" name="confirmar_contraseña" placeholder="Confirmar Contraseña">
+              <input type="submit" class="fadeIn fourth" value="Registrarse">
+          </form>
     
         </div>
     </div>

@@ -10,6 +10,9 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    networks:
+      - my_network
+
   db:
     image: mariadb
     restart: always
@@ -20,3 +23,9 @@ services:
       MYSQL_ROOT_PASSWORD: 'root_password'
     volumes:
       - ./db_data:/var/lib/mysql
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
