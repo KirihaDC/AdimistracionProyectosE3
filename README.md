@@ -1,36 +1,17 @@
 # AdimistracionProyectosE3
 
-Para correr el django en el programa hacer esto
+#Iniciar docoker
+(que no se te olvide arrancar su aplicacion)
+(si tienes fallas intenta reiniciar el doker)
+-> cd //dirijete al proyecto
+-> docker-compose down -v //solo usar en caso de que no abra los servicios
+-> docker-compose down //cierra el proyecto
+-> docker-compose up -d --build //crea todo
+-> docker-compose exec web bash //arranca doker
 
-# Instalar Django
-pip install django
-
-# Crear todo lo que se ocupa cada que se descarga una version nueva del git segun sea necesario
-# Tambien arranca el codigo
-docker-compose up 
-
-# Arrancar docker
-python manage.py runserver // Arrancar el proyecto
-
-
-
-# Para la base de datos
-# Instalar MariaDB en dado caso de ser necesario por algun tipo de error
-docker pull mariadb
-
-# Accede al contenedor de MariaDB:
-docker exec -it Usuarios bash
-
-# Conectarte al servidor
-mysql -u root -p
-
-
-CREATE TABLE IF NOT EXISTS Usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario VARCHAR(255) NOT NULL,
-    correo VARCHAR(255) NOT NULL,
-    contraseña VARCHAR(255) NOT NULL
-);
-
-INSERT INTO Usuarios (usuario, correo, contraseña) 
-VALUES ('admin', 'kirihadc020@gmail.com', '123');
+# Ya estando arrancado ejecutar lo siguiente segun sea necesario
+-> python manage.py runserver 0.0.0.0:8080 //corre el proyecto
+-> python3 manage.py startapp nombre
+-> python3 manage.py makemigrations //para ver las migraciones
+-> python3 manage.py migrate //para crear las migraciones
+-> python3 manage.py createsuperuser //es para crear un super usuario
