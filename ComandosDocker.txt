@@ -14,6 +14,10 @@
 -> python3 manage.py migrate //para crear las migraciones
 -> python3 manage.py createsuperuser //es para crear un super usuario
 
+Comandos git
+git add .
+git commit -m ""
+git push origin main
 
 
 
