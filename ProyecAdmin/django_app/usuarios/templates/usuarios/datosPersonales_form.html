@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+    {{ accion }} Encargado
+{% endblock titulo %}
+
+{% block encabezado %}
+    {{ accion }} Datos del equipo: {{ request.user }} ENCARGADO
+{% endblock encabezado %}
+
+{% block contenido %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <button class="btn btn-success btn-block" type="submit">Guardar</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <a class="btn btn-danger btn-block" href="{% url 'bienvenida' %}">Cancelar</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock contenido %}
+
+{% block scripts %}
+    <script src="{% static 'dist/js/funciones.js' %}"></script>
+{% endblock scripts %}

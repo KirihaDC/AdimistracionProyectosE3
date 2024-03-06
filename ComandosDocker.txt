@@ -19,6 +19,7 @@ Todo desde AdimistracionProyectosE3
 git add .
 git commit -m ""
 git push origin main
+git pull
 
 
 

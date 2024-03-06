@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+    Lista de usuarios
+{% endblock titulo %}
+
+{% block encabezado %}
+    Lista de usuarios
+{% endblock encabezado %}
+
+{% block contenido %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger">
+                    {{message}}
+                </div>
+            {% else %}
+                <div class="alert alert-success">
+                    {{message}}
+                </div>
+            {% endif %}        
+        {% endfor %}
+    {% endif %}
+    <div class="container mt-4">
+        <div class="table-responsive">
+            <table class="table table-sm" style="border: 2px solid grey;">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Id</th>
+                        <th style="width: 20%;">Equipo</th>
+                        <th style="width: 20%;">Correo</th>
+                        <th style="width: 55%;">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in object_list  %}
+                        <tr>
+                            <td>{{usuario.id}}</td>
+                            <td style="white-space: pre-wrap;">{{usuario.username}}</td>
+                            <td style="white-space: pre-wrap;">{{usuario.email}}</td>
+                            <td>
+                                {% for grupo in request.user.groups.all %} 
+                                    {% if 'Administrador' in grupo.name %}
+                                    <div class="btn-group d-none d-sm-block">
+                                        <button type="button" 
+                                            onclick="asignaUsuario('{{usuario.id}}', '{% for g in usuario.groups.all %}{{g.id}}-{% endfor %}')"
+                                            class="btn btn-inverse-info btn-fw"
+                                            data-usuario="{{usuario.id}}" 
+                                            data-grupos="{% for g in usuario.groups.all %}{{g.id}}-{% endfor %}" 
+                                            data-toggle="modal" 
+                                            data-target="#modal-grupos"
+                                            title="Asignar Grupo">
+                                            <i class="icon-people"> Asignar Grupo</i>
+                                        </button>
+                                        <a href="{% url 'eliminar_usuario2' usuario.id %}" class="btn btn-inverse-danger btn-fw"><i class="icon-trash"></i> Eliminar</a>
+                                            </a>
+                                    </div>
+
+                                
+                                        <div class="d-block d-sm-none mt-2">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="dropdown" title="Opciones"><i class="icon-options-vertical"></i></button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="{% url 'eliminar_usuario2' usuario.id %}" class="btn btn-inverse-danger btn-fw"><i class="icon-trash"></i> Eliminar</a>
+                                                    <a class="dropdown-item" 
+                                                        onclick="asignaUsuario('{{usuario.id}}', '{% for g in usuario.groups.all %}{{g.id}}-{% endfor %}')"
+                                                        class="btn btn-inverse-info btn-fw" 
+                                                        data-usuario="{{usuario.id}}" 
+                                                        data-grupos="{% for g in usuario.groups.all %}{{g.id}}-{% endfor %}" 
+                                                        data-toggle="modal" 
+                                                        data-target="#modal-grupos"
+                                                        title="Asignar Grupo">
+                                                        <i class="icon-people"> </i> Asignar Grupo
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">
+                                <p>No existen usuarios registrados</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-grupos">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Asignar grupos</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formGrupos" action="{% url 'asignar_grupos' %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        {% for grupo in grupos %}
+                            <p>
+                                <input type="checkbox" id="grupo_{{ grupo.id }}" name="{{ grupo.id }}" {% if grupo in usuario.groups.all %}checked{% endif %} {% if grupo in usuario.groups.all %}disabled{% endif %}>
+                                <label for="grupo_{{ grupo.id }}">{{ grupo.name }}</label><br>
+                                
+                            </p>
+                        {% endfor %}
+                    </div>
+                    <input type="hidden" name="usuario" id="idUsuario">
+                    <div class="modal-footer justify-content-between">
+                        <button type="submit" class="btn btn-primary btn-sm" title="Asignar Grupos"><i class="icon-user-follow"> </i> Asignar grupos</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock contenido %}
+
+{% block scripts %}
+    <script src="{% static 'js/funciones.js' %}"></script>
+    <style>
+        /* Estilo para permitir múltiples líneas en las celdas */
+        table {
+            table-layout: fixed;
+        }
+    </style>
+
+    <script>
+    // Obtener todas las casillas de verificación
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    
+    // Agregar un evento de escucha a cada casilla de verificación
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            // Deshabilitar todas las casillas de verificación excepto la que se acaba de marcar
+            checkboxes.forEach(cb => {
+                if (cb !== this) {
+                    cb.disabled = this.checked;
+                }
+            });
+        });
+    });
+</script>
+{% endblock scripts %}

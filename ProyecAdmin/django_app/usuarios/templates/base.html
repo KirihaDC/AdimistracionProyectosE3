@@ -1,0 +1,266 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+      {% block titulo %} 
+      {% endblock titulo %}
+    </title>
+    <link rel="stylesheet" href="{% static 'vendors/simple-line-icons/css/simple-line-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/flag-icon-css/css/flag-icon.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/css/vendor.bundle.base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+    }
+      body, .content-wrapper {
+        min-height: 100vh;
+        background-image: url('{% static 'images/Incubatec_login.jpg' %}');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-color: #4f0351; /* Morado clarito */
+      }
+    </style>
+    
+    {% block css %}
+    {% endblock css %}
+  </head>
+  <body>
+    <div class="container-scroller">
+      <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="navbar-nav navbar-nav-right ml-auto">
+          <img src="{% static 'images/INCUBATEMenu.jpg' %}" width="240" height="70"/></a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1">
+          <ul class="navbar-nav navbar-nav-right ml-auto">
+            <form class="search-form d-none d-md-block" action="#">
+            </form>
+            <li class="nav-item dropdown d-none d-xl-inline-flex user-dropdown">
+              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <span class="font-weight-normal"> 
+                  {% if request.user.username %}
+                    {{request.user.username}}
+                  {% else %}
+                    <a href="{% url 'login' %}" class="text-primary">Iniciar secion</a>
+                  {% endif %}
+                </span></a>  
+              {% if request.user.username %}
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                <div class="dropdown-header text-center">
+                  <p class="mb-1 mt-3">{{request.user.username}}</p>
+                  <p class="font-weight-light text-muted mb-0">{{request.user.email}}</p>
+                </div>
+                {% if request.user.groups.all.count == 0 %}
+                {% if user.datos.nombre1 %}
+                  <h3 class="dropdown-item">
+                    <a href="{% url 'perfilEditar' %}" class="dropdown-item"><i class="dropdown-item-icon icon-user text-info"></i>Editar Encargado</a>
+                  </h3>   
+                {% else %}
+                  <h3 class="dropdown-item">
+                    <a href="{% url 'perfil' %}" class="dropdown-item"><i class="dropdown-item-icon icon-user text-info"></i>Crear Encargado</a>
+                  </h3>
+                {% endif %}
+                {% if user.datos2.nombre2 %}
+                  <h3 class="dropdown-item">
+                    <a href="{% url 'perfilEditar2' %}" class="dropdown-item"><i class="dropdown-item-icon icon-user text-info"></i>Editar Integrante 2</a>
+                  </h3>   
+                {% else %}
+                  <h3 class="dropdown-item">
+                    <a href="{% url 'perfil2' %}" class="dropdown-item"><i class="dropdown-item-icon icon-user text-info"></i>Crear Integrante 2</a>
+                  </h3>
+                {% endif %} 
+                {% if user.datos3.nombre3 %}
+                <h3 class="dropdown-item">
+                  <a href="{% url 'perfilEditar3' %}" class="dropdown-item"><i class="dropdown-item-icon icon-user text-info"></i>Editar Integrante 3</a>
+                </h3>   
+              {% else %}
+                <h3 class="dropdown-item">
+                  <a href="{% url 'perfil3' %}" class="dropdown-item"><i class="dropdown-item-icon icon-user text-info"></i>Crear Integrante 3</a>
+                </h3>
+              {% endif %} 
+              {% endif %}
+                <a href="{% url 'logout' %}" class="dropdown-item"><i class="dropdown-item-icon icon-power text-info"></i>Cerrar sesión</a>
+              </div>
+              {% endif %}
+            </li>
+          </ul>
+          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="icon-menu"></span>
+          </button>
+        </div>
+      </nav>
+      <div class="container-fluid page-body-wrapper">
+          <nav class="sidebar sidebar-offcanvas" id="sidebar" style="background-color:#29163f">
+            <ul class="nav">
+              <li class="nav-item nav-profile">
+                <a href="#" class="nav-link">
+                  <div class="text-wrapper">
+                    {% if request.user.username %}
+                    <p class="profile-name">{{request.user.username}}</p>
+                      {% for grupo in request.user.groups.all %} 
+                        {% if 'Administrador' in grupo.name %}
+                          <p class="designation">Administrator</p>
+                        {% endif %}
+                      {% endfor %}
+                      {% for grupo in request.user.groups.all %} 
+                        {% if 'Evaluador' in grupo.name %}
+                          <p class="designation">Evaluador</p>
+                        {% endif %}
+                      {% endfor %}
+
+                      {% if request.user.groups.all.count == 0 %}
+                      <p class="designation">Equipo</p>
+                      {% endif %}
+                    {% else %}
+                      <a href="{% url 'login' %}" class="designation">Iniciar sesion</a>
+                    {% endif %}
+
+                  </div>
+                </a>
+              </li>
+            
+              
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                    <span class="menu-title text-secondary"> Bienvenidos al sistema</span>
+                    <i class="icon-globe-alt menu-icon text-info"></i>
+                  </a>
+                  <div class="collapse" id="auth">
+                    <ul class="nav flex-column sub-menu">
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'bienvenida'%}"> Bienvenida </a></li>
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'modalidades_lista' %}"> Modalidad </a></li>
+                    </ul>
+                  </div>
+                </li>
+                {% if request.user.groups.all.count == 0 %}
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="collapse" href="#auth2" aria-expanded="false" aria-controls="auth2">
+                    <span class="menu-title text-secondary">Equipo</span>
+                    <i class="icon-people menu-icon text-info"></i>
+                  </a>
+                  <div class="collapse" id="auth2">
+                    <ul class="nav flex-column sub-menu">
+                      {% if user.datos.nombre1 %}
+                        <li class="nav-item"> <a class="nav-link" href="{% url 'perfilEditar'%}">Editar Encargado </a></li>
+                      {% else %}
+                        <li class="nav-item"> <a class="nav-link" href="{% url 'perfil'%}"> Crear Encargado </a></li>
+                      {% endif %}
+                      {% if user.datos2.nombre2 %}
+                        <li class="nav-item"> <a class="nav-link" href="{% url 'perfilEditar2'%}">Editar Integrante 2 </a></li>
+                      {% else %}
+                        <li class="nav-item"> <a class="nav-link" href="{% url 'perfil2'%}"> Crear Integrante 2 </a></li>
+                      {% endif %}
+                      {% if user.datos3.nombre3 %}
+                        <li class="nav-item"> <a class="nav-link" href="{% url 'perfilEditar3'%}">Editar Integrante 3 </a></li>
+                      {% else %}
+                        <li class="nav-item"> <a class="nav-link" href="{% url 'perfil3'%}"> Crear Integrante 3 </a></li>
+                      {% endif %}
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'solicitudes_lista1' %}"> Mis Solicitudes </a></li>
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'tareas_lista' %}">Facturas</a></li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">
+                            <span class="menu-title text-secondary">Cerrar sesión</span>
+                            <i class="icon-power menu-icon text-info"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                {% endif %}
+                  {% for grupo in request.user.groups.all %} 
+                    {% if 'Evaluador' in grupo.name %}
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'solicitudes_lista' %}"> Solicitudes <i class="icon-people menu-icon text-info"></i></a></li>
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'logout' %}"> Cerrar sesión <i class="icon-power menu-icon text-info"></i></a></li>
+                    {% endif %}
+                  {% endfor %}
+                  {% for grupo in request.user.groups.all %} 
+                    {% if 'Administrador' in grupo.name %}
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#auth3" aria-expanded="false" aria-controls="auth3">
+                          <span class="menu-title text-secondary">Usuarios</span>
+                          <i class="icon-people menu-icon text-info"></i>
+                        </a>
+                        <div class="collapse" id="auth3">
+                          <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"> <a class="nav-link" href="{% url 'lista' %}"> Usuarios del sistema </a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{% url 'solicitudes_lista' %}"> Solicitudes </a></li>
+                          </ul>
+                        </div>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#auth4" aria-expanded="false" aria-controls="auth4">
+                          <span class="menu-title text-secondary">Convocatoria</span>
+                          <i class="icon-book-open menu-icon text-info"></i>
+                        </a>
+                        <div class="collapse" id="auth4">
+                          <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"> <a class="nav-link" href="{% url 'convocatoria_lista' %}"> Lista de convocatoria</a></li>
+                          </ul>
+                        </div>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link"  href="{% url 'tareas_lista' %}" aria-expanded="false">
+                          <span class="menu-title text-secondary">Facturas</span>
+                          <i class="icon-doc menu-icon text-info"></i>
+                        </a>
+                        
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">
+                            <span class="menu-title text-secondary">Cerrar sesión</span>
+                            <i class="icon-power menu-icon text-info"></i>
+                        </a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+              </ul>
+          </nav>
+          <div class="main-panel">
+            <div class="content-wrapper">
+              <div class="row">
+                <div class="col-md-12 grid-margin">
+                  <div class="card">
+                    {% block encabe %}
+                    {% endblock encabe %} 
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="d-sm-flex align-items-baseline report-summary-header">
+                            <h5 class="font-weight-semibold">
+                              {% block encabezado %}
+                              {% endblock encabezado %}
+                            </h5> <span class="ml-auto">
+                          </div>
+                        </div>
+                      </div>
+                    <div class="row report-inner-cards-wrapper">
+                      {% block contenido %}
+                      {% endblock contenido %}
+                      {% block imagenes %}
+                      {% endblock imagenes %}
+                      {% block contenido2 %}
+                      {% endblock contenido2 %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer class="footer">
+          </footer>
+        </div>
+      </div>
+    </div>
+    <script src="{% static 'vendors/js/vendor.bundle.base.js' %}"></script>
+    <script src="{% static 'js/off-canvas.js' %}"></script>
+    <script src="{% static 'js/misc.js' %}"></script>
+    {% block scripts %}
+    {% endblock scripts %}
+  </body>
+</html>
