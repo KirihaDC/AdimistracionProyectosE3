@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Archivo</title>
+</head>
+<body>
+    <h1>Crear Archivo</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.nombre_archivo.errors }}
+        <label for="id_nombre_archivo">Nombre del Archivo:</label>
+        {{ form.nombre_archivo }}
+        <br>
+        {{ form.contenido.errors }}
+        <label for="id_contenido">Contenido:</label>
+        {{ form.contenido }}
+        <br>
+        <button type="submit">Guardar Archivo</button>
+    </form>
+</body>
+</html>
