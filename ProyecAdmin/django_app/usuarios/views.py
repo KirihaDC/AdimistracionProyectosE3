@@ -4,16 +4,20 @@ from .forms import UserRegistrationForm
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login
 
 def homepage(request):
     if request.method == 'POST':
-        nombre_usuario = request.POST['nombre_usuario']
-        contraseña = request.POST['contraseña']
+        nombre_usuario = request.POST.get('nombre_usuario')
+        contraseña = request.POST.get('contraseña')
         usuario = authenticate(username=nombre_usuario, password=contraseña)
         if usuario is not None:
             login(request, usuario)
-            return redirect('administrador') 
+            if usuario.is_staff:  # Verifica si el usuario es administrador
+                return redirect('administrador')  # Redirige a la vista del administrador
+            else:
+                return redirect('inicio')  # Redirige a la vista del usuario normal
         else:
             messages.error(request, 'Credenciales inválidas')
     return render(request, 'homepage.html')
@@ -21,6 +25,7 @@ def homepage(request):
 def inicio(request):
     return render(request, 'inicio.html')
 
+@staff_member_required
 def administrador(request):
     return render(request, 'administrador.html')
 
