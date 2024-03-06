@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mi sitio web</title>
+</head>
+<body>
+    <h1>Lista de Archivos de Texto</h1>
+    
+
+    <ul>
+        {% for archivo in archivos %}
+        <li>
+            <strong>{{ archivo.nombre }}</strong><br>
+            <a href="{{ archivo.archivo.url }}" target="_blank">Descargar Archivo</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
