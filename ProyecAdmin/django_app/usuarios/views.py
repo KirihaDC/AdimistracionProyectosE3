@@ -13,13 +13,17 @@ def homepage(request):
         usuario = authenticate(username=nombre_usuario, password=contraseña)
         if usuario is not None:
             login(request, usuario)
-            return redirect('inicio') 
+            return redirect('administrador') 
         else:
             messages.error(request, 'Credenciales inválidas')
     return render(request, 'homepage.html')
 
 def inicio(request):
     return render(request, 'inicio.html')
+
+def administrador(request):
+    return render(request, 'administrador.html')
+
 
 def reset_password(request):
     return render(request, 'reset_password.html')
