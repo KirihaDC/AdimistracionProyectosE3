@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administrador</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #menu {
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+        
+        #menu ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        #menu ul li {
+            padding: 15px;
+            border-bottom: 1px solid #555;
+        }
+        
+        #menu ul li a {
+            color: #fff; /* Cambia el color de las letras del menú */
+            text-decoration: none; /* Quita el subrayado de los enlaces */
+        }
+        
+        #menu ul li:hover {
+            background-color: #555;
+        }
+        
+        #contenido {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="menu">
+        <ul>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Usuarios</a></li>
+            <li><a href="#">Presentaciones</a></li>
+            <li><a href="#">Salir</a></li>
+        </ul>
+    </div>
+    <div id="contenido">
+        <h1>Bienvenido al Panel de Administrador</h1>
+        <!-- Aquí colocarías el contenido específico de cada sección -->
+    </div>
+</body>
+</html>
