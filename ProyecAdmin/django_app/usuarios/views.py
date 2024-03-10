@@ -32,6 +32,9 @@ def administrador(request):
 
 def reset_password(request):
     return render(request, 'reset_password.html')
+
+def help(request):
+    return render(request, 'help.html')
     
 def register(request):
     if request.method == 'POST':

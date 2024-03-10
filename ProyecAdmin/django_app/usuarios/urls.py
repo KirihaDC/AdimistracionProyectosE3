@@ -7,5 +7,5 @@ urlpatterns = [
     path('reset-password/', views.reset_password, name='reset_password'),
     path('inicio/', views.inicio, name='inicio'),
     path('administrador/', views.administrador, name='administrador'),
-
+    path('help/', views.help, name='help'),
 ]

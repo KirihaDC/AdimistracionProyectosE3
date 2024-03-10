@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Inicio</title>
+    <style>
+        /* Estilos CSS aquí */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            text-align: center;
+            margin-top: 20px;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav ul li a:hover {
+            color: #666;
+        }
+        section {
+            padding: 20px;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mi Sitio Web</h1>
+    </header>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Acerca de</a></li>
+                <li><a href="#">Servicios</a></li>
+                <li><a href="#">Ayuda</a></li>
+            </ul>
+        </nav>
+        <!--- NOTA: TENER EN CUENTA QUE ESTA PAGINA NADAMAS PUEDE SER ACCEDIDA POR EL ADMINISTRADOR-->
+        <section>
+            <h2>Ayuda</h2>
+            <p>Bienvenido al manual de creaci&oacute;n de presentaciones, aquí puedes consultar los comandos para crear una presentaci&oacute;n 
+                desde un archivo ".txt", todo el material a consultar lo puedes encontrar a continuaci&oacute;n para que puedas hacer tu primera 
+                presentaci&oacute;n desde cero.
+
+            </p>
+            <!--- QUE ES UN TXT -->
+            <h3>Sobre los archivos ".txt"</h3>
+            <p>Un archivo ".txt" es un archivo de texto plano, dónde se puede escribir lo que tu quieras en formato ASCII, 
+                la idea de estos archivos es la escritura de texto legible por humanos, en este caso, para crear una presentación
+                deberás crear un archivo de estos. A continuación te mostraremos cómo hacer tu primera presentación con un archivo
+                ".txt".
+            </p>
+            <!--- QUE ES UN TXT -->
+            <h3>Crear un archivo ".txt"</h3>
+            <p>Puedes crear un archivo .txt en cualquier lugar de tu computadora que tengas a la mano, para ello, puedes hacer 
+                derecho en cualquier parte de tu pantalla y presionas el botón de "Nuevo" y consiguiente te aparecerá un submenú 
+                que muestra qué archivos puedes crear. Para nosotros nos interesa el que dice "Documento de Texto" y haciendo clic en
+                esta opción te creará un archivo ".txt". Despúes de esto, simplemente puedes ponerle el nombre que te guste y pulsas 
+                la tecla de "Enter".
+                <br><em>• Para crear un usuario, puedes guiarte de la siguiente imagen:</em>
+                <br><center><img src="https://www.groovypost.com/wp-content/uploads/2018/05/01-Go-to-New-Text-Document-Windows.png" 
+                alt="imagen de ejemplo de como abrir un Archivo .txt" height="300" width="375" title="Creación de un Archivo .txt">
+                <br><em>Figura 1. Haz clic derecho y te aparecerá un menu para crear el archivo.</em></center>
+            </p>
+            <!--- COMO CREAR UNA PRESENTACION -->
+            <h3>Crear una presentaci&oacute;n</h3>
+            <p>
+                Para crear una presentación puedes escribir en el archivo ".txt" para poder crear la presentacion, en este caso puedes
+                escribir el texto de la presentación como texto y esté será y hacer uso de los
+                distintos elementos se usan distintos comandos para varias cosas.  
+            </p>
+            <!--- COMO CREAR UNA PRESENTACION -->
+            <h3>Simbología de los elementos de una diapositiva</h3>
+            <p>
+                <h4>Agregar una diapostiva</h4>
+                Para crear una diapositiva nueva puedes escribir <em>[ingresar simbolo(s)]</em>,
+                esto te permitirá definir cuándo empieza una nueva diapostiva. Si no se especifica ningún
+                símbolo todo se agregará a una simple diapositiva. (No es recomendable si hay mucho texto en
+                tu archivo)
+                <br>
+                <h4>Hacer un título</h4>
+                Para definir un título en una diapositiva usa <em>[ingresar simbolo(s)]</em>, este símbolo hará
+                que todo lo de una línea sea un título, por ejemplo: [ingresar simbolo(s)] Esto de aquí es un título
+                <br>
+                <h4>Escribir texto normal</h4>
+                Para empezar a escribir texto normal, puedes simplemente escribirlo sin símbolo despúes de definir
+                una diapositiva. Por ejemplo:<br> <em>[Simbolo de Diapositiva]</em>  <- A partir de aquí todo texto
+                sin símbolos será cuerpo del texto 
+                <br> <em>[Simbolo de Título]</em> Esto es un título
+                <br> Todo esto es texto de la diapositiva.
+                <br>
+                <h4>Cambiar color de Texto</h4>
+                Puedes usar los símbolos <em>[ingresar simbolo(s)]</em> para encerrar una palabra o varias palabras para
+                cambiar el color del texto, el color del texto se debería de colocar como alguno de los siguientes:
+                <ol type="A">
+                    <li> "Red" = Color Rojo </li>
+                    <li> "Blue" = Color Azul </li>
+                    <li> "Green" = Color Verde </li>
+                    <li> "Yllw" = Color Amarillo </li>
+                    <li> "Black" = Color Negro </li>
+                    <li> "Orge" = Color Naranja </li>
+                    <li> "Brwn" = Color Cafe </li>
+                </ol>
+                <br>
+                <h4>Hacer un subtítulo</h4>
+                Para definir un subtítulo en una diapositiva usa <em>[ingresar simbolo(s)]</em>, similar a cómo funciona un título
+                ya que hace que todo lo de una línea sea un subtítulo, por ejemplo: [ingresar simbolo(s)] Esto de aquí es un subtítulo
+                <br>
+                <h4>Cambiar fuente (Aún en discusión)</h4>
+                La función de cambiar fuente aún se mantiene en discución, si esta resulta ser posible para su uso, aquí pondremos
+                la información.
+                <br>
+                <b><em>¿Tienes dudas? <p href="#">¡Contactános!</p></em></b>
+            </p>
+            <br>
+            <br>
+
+        </section>
+    </div>
+    <footer>
+        <p>Derechos de autor &copy; 2024 Mi Sitio Web</p>
+    </footer>
+</body>
+</html>
