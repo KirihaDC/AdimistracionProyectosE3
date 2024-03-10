@@ -72,6 +72,9 @@ def eliminar_cuenta(request, usuario_id):
     else:
         return render({'mensaje': 'El usuario no existe'}, status=400)
 
+def help(request):
+    return render(request, 'help.html')
+    
 def register(request):
     if request.method == 'POST':
         correo = request.POST['correo']

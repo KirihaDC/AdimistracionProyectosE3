@@ -12,4 +12,5 @@ urlpatterns = [
     path('lista_usuarios/', views.lista_usuarios, name='lista_usuarios'),
     path('cambiar-rol/<int:usuario_id>/', views.cambiar_rol, name='cambiar_rol'),
     path('eliminar_usuario/<int:usuario_id>/', views.eliminar_cuenta, name='eliminar_usuario'),
+    path('help/', views.help, name='help'),
 ]
