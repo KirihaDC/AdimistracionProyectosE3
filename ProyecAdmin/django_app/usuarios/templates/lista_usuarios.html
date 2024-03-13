@@ -1,151 +1,179 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block titulo %}
-    Lista de usuarios
-{% endblock titulo %}
-
-{% block encabezado %}
-    Lista de usuarios
-{% endblock encabezado %}
-
-{% block contenido %}
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                <div class="alert alert-danger">
-                    {{message}}
-                </div>
-            {% else %}
-                <div class="alert alert-success">
-                    {{message}}
-                </div>
-            {% endif %}        
-        {% endfor %}
-    {% endif %}
-    <div class="container mt-4">
-        <div class="table-responsive">
-            <table class="table table-sm" style="border: 2px solid grey;">
-                <thead>
-                    <tr>
-                        <th style="width: 5%;">Id</th>
-                        <th style="width: 20%;">Equipo</th>
-                        <th style="width: 20%;">Correo</th>
-                        <th style="width: 55%;">Opciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for usuario in object_list  %}
-                        <tr>
-                            <td>{{usuario.id}}</td>
-                            <td style="white-space: pre-wrap;">{{usuario.username}}</td>
-                            <td style="white-space: pre-wrap;">{{usuario.email}}</td>
-                            <td>
-                                {% for grupo in request.user.groups.all %} 
-                                    {% if 'Administrador' in grupo.name %}
-                                    <div class="btn-group d-none d-sm-block">
-                                        <button type="button" 
-                                            onclick="asignaUsuario('{{usuario.id}}', '{% for g in usuario.groups.all %}{{g.id}}-{% endfor %}')"
-                                            class="btn btn-inverse-info btn-fw"
-                                            data-usuario="{{usuario.id}}" 
-                                            data-grupos="{% for g in usuario.groups.all %}{{g.id}}-{% endfor %}" 
-                                            data-toggle="modal" 
-                                            data-target="#modal-grupos"
-                                            title="Asignar Grupo">
-                                            <i class="icon-people"> Asignar Grupo</i>
-                                        </button>
-                                        <a href="{% url 'eliminar_usuario2' usuario.id %}" class="btn btn-inverse-danger btn-fw"><i class="icon-trash"></i> Eliminar</a>
-                                            </a>
-                                    </div>
-
-                                
-                                        <div class="d-block d-sm-none mt-2">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="dropdown" title="Opciones"><i class="icon-options-vertical"></i></button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="{% url 'eliminar_usuario2' usuario.id %}" class="btn btn-inverse-danger btn-fw"><i class="icon-trash"></i> Eliminar</a>
-                                                    <a class="dropdown-item" 
-                                                        onclick="asignaUsuario('{{usuario.id}}', '{% for g in usuario.groups.all %}{{g.id}}-{% endfor %}')"
-                                                        class="btn btn-inverse-info btn-fw" 
-                                                        data-usuario="{{usuario.id}}" 
-                                                        data-grupos="{% for g in usuario.groups.all %}{{g.id}}-{% endfor %}" 
-                                                        data-toggle="modal" 
-                                                        data-target="#modal-grupos"
-                                                        title="Asignar Grupo">
-                                                        <i class="icon-people"> </i> Asignar Grupo
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="4">
-                                <p>No existen usuarios registrados</p>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modal-grupos">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Asignar grupos</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="formGrupos" action="{% url 'asignar_grupos' %}" method="post">
-                    {% csrf_token %}
-                    <div class="modal-body">
-                        {% for grupo in grupos %}
-                            <p>
-                                <input type="checkbox" id="grupo_{{ grupo.id }}" name="{{ grupo.id }}" {% if grupo in usuario.groups.all %}checked{% endif %} {% if grupo in usuario.groups.all %}disabled{% endif %}>
-                                <label for="grupo_{{ grupo.id }}">{{ grupo.name }}</label><br>
-                                
-                            </p>
-                        {% endfor %}
-                    </div>
-                    <input type="hidden" name="usuario" id="idUsuario">
-                    <div class="modal-footer justify-content-between">
-                        <button type="submit" class="btn btn-primary btn-sm" title="Asignar Grupos"><i class="icon-user-follow"> </i> Asignar grupos</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-{% endblock contenido %}
-
-{% block scripts %}
-    <script src="{% static 'js/funciones.js' %}"></script>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Usuarios</title>
     <style>
-        /* Estilo para permitir múltiples líneas en las celdas */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+            padding: 20px 0;
+        }
         table {
-            table-layout: fixed;
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+        .admin {
+            color: #FF6347; /* Rojo oscuro */
+        }
+        .user {
+            color: #4682B4; /* Azul acero */
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            background-color: #4CAF50; /* Verde */
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn-danger {
+            background-color: #f44336; /* Rojo */
+        }
+        .btn-back {
+            background-color: #2196F3; /* Azul */
+        }
+        .btn-back:hover, .btn-danger:hover, .btn:hover {
+            opacity: 0.8;
+        }
+        .center {
+            text-align: center;
+        }
+        /* Estilos para el menú de selección de rol */
+        select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        select:focus {
+            outline: none;
+            border-color: #2196F3; /* Cambia el color del borde al enfocar */
+        }
+
+        /* Posiciona el botón de regresar en la esquina superior derecha */
+        .btn-back {
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
     </style>
+</head>
+<body>
+    <button class="btn btn-back" onclick="window.history.back()">Regresar</button>
+
+    <h1>Listado de Usuarios</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre de Usuario</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.username }}</td>
+                    <td class="{% if usuario.is_superuser %}admin{% else %}user{% endif %}">
+                        {% if usuario.is_superuser %}Administrador{% else %}Usuario Normal{% endif %}
+                    </td>
+                    <td>
+                        <form method="post" action="{% url 'cambiar_rol' usuario.id %}" id="form_cambiar_rol_{{ usuario.id }}">
+                            {% csrf_token %}
+                            <select name="nuevo_rol">
+                                <option value="admin">Administrador</option>
+                                <option value="user">Usuario Normal</option>
+                            </select>
+                            <button type="submit" class="btn">Cambiar Rol</button>
+                        </form>
+                        <button class="btn btn-danger" onclick="eliminarUsuario('{{ usuario.id }}')">Eliminar</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <script>
-    // Obtener todas las casillas de verificación
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    
-    // Agregar un evento de escucha a cada casilla de verificación
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            // Deshabilitar todas las casillas de verificación excepto la que se acaba de marcar
-            checkboxes.forEach(cb => {
-                if (cb !== this) {
-                    cb.disabled = this.checked;
-                }
+         function eliminarUsuario(usuarioId) {
+            if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+                fetch('/eliminar_usuario/' + usuarioId + '/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Eliminar la fila de la tabla
+                        document.getElementById('usuario-' + usuarioId).remove();
+                        // Recargar la página después de eliminar el usuario
+                        location.reload();
+                    } else {
+                        alert("No se pudo eliminar el usuario.");
+                    }
+                });
+            }
+        }
+    </script>
+
+<script>
+    function cambiarRol(idUsuario) {
+    var nuevoRol = document.getElementById('nuevo_rol_' + idUsuario).value;
+    fetch('/cambiar-rol/' + idUsuario + '/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'  // Asegúrate de tener este token CSRF en tu HTML
+        },
+        body: JSON.stringify({
+            nuevo_rol: nuevoRol
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Rol cambiado exitosamente.');
+            location.reload();  // Recarga la página para actualizar la lista de usuarios
+        } else {
+            return response.json().then(data => {
+                throw new Error(data.error || 'Ocurrió un error al cambiar el rol.');
             });
-        });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error.message);
+        alert(error.message);
     });
+}
 </script>
-{% endblock scripts %}
+</body>
+</html>

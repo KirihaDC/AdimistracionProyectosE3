@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentaciones</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Establece la altura del cuerpo al 100% de la altura de la ventana */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #contenido {
+            width: 80%;
+            text-align: center;
+        }
+
+        label {
+            font-size: 20px;
+        }
+
+        textarea {
+            padding: 20px;
+            font-size: 14px;
+            width: 100%; /* Ocupa todo el ancho disponible */
+            height: 300px; /* Ajusta la altura para permitir descripciones largas */
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box; /* Para incluir el padding en el ancho */
+            resize: none; /* Evita que se pueda redimensionar */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="contenido">
+        <h1>Generación de Presentaciones</h1>
+        <form action="#">
+            <label for="tituloPresentacion">Título de la presentación:</label><br>
+            <textarea id="tituloPresentacion" name="tituloPresentacion" placeholder="Escribe tu presentación aquí..." onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }"></textarea><br>
+            <button type="submit" id="generarPresentacion">Generar</button>
+            <button onclick="window.location.href = 'index.html';">Regresar</button>
+        </form>
+    </div>
+</body>
+</html>
+
