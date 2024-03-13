@@ -1,9 +1,7 @@
 from django.shortcuts import render
-<<<<<<< HEAD
-#
-from django.views.generic import ListView
-#
 from .models import Presentacion
+from django.views.generic import ListView
+from .forms import CrearArchivoForm
 
 class PresentacionListView(ListView):
     model = Presentacion
@@ -12,10 +10,6 @@ class PresentacionListView(ListView):
 
     def get_queryset(self):
         return Presentacion.objects.only('nombre', 'archivo')
-
-
-=======
-from .forms import CrearArchivoForm
 
 # Create your views here.
 
@@ -33,7 +27,4 @@ def crear_archivo(request):
         form = CrearArchivoForm()
     return render(request, 'crear_archivo.html', {'form': form})
 
-#from django.shortcuts import render
-#from .forms import CrearArchivoForm
 
->>>>>>> c0749442b67f8e0faee6a25dc80147bcd20b0448
