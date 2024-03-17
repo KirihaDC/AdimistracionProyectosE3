@@ -56,9 +56,10 @@
     <div id="menu">
         <ul>
             <li><a href="#">Inicio</a></li>
-            <li><a href="#">Usuarios</a></li>
-            <li><a href="#">Presentaciones</a></li>
-            <li><a href="#">Salir</a></li>
+            <li><a href="{% url 'lista_usuarios' %}">Usuarios</a></li>
+            <li><a href="{% url 'presentaciones' %}">Presentaciones</a></li>
+            <li><a href="#">Lista Presentaciones</a></li>
+            <li><a href="{% url 'cerrar_sesion' %}">Cerrar sesion</a></li>
         </ul>
     </div>
     <div id="contenido">

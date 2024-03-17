@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            height: 100vh; /* Establece la altura del cuerpo al 100% de la altura de la ventana */
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -25,30 +25,50 @@
         }
 
         textarea {
-            padding: 20px;
+            padding: 10px;
             font-size: 14px;
-            width: 100%; /* Ocupa todo el ancho disponible */
-            height: 300px; /* Ajusta la altura para permitir descripciones largas */
+            width: 100%;
             margin-bottom: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
-            box-sizing: border-box; /* Para incluir el padding en el ancho */
-            resize: none; /* Evita que se pueda redimensionar */
+            box-sizing: border-box;
+            resize: none;
         }
 
-        button {
+        textarea#tituloPresentacion {
+            height: 40px; /* Tamaño más grande */
+        }
+
+        textarea#contenidoPresentacion {
+            height: 300px; /* Tamaño más pequeño */
+        }
+
+        button, .btn-back {
             padding: 10px 20px;
             font-size: 18px;
-            background-color: #007bff;
-            color: #fff;
             border: none;
             cursor: pointer;
             border-radius: 5px;
+            text-decoration: none;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
             margin-right: 10px;
         }
 
         button:hover {
             background-color: #0056b3;
+        }
+
+        .btn-back {
+            background-color: #ccc;
+            color: #000;
+        }
+
+        .btn-back:hover {
+            background-color: #999;
         }
     </style>
 </head>
@@ -57,11 +77,14 @@
         <h1>Generación de Presentaciones</h1>
         <form action="#">
             <label for="tituloPresentacion">Título de la presentación:</label><br>
-            <textarea id="tituloPresentacion" name="tituloPresentacion" placeholder="Escribe tu presentación aquí..." onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }"></textarea><br>
+            <textarea id="tituloPresentacion" name="tituloPresentacion" placeholder="Escribe tu título aquí..." onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }"></textarea><br>
+            <label for="contenidoPresentacion">Contenido de la presentación:</label><br>
+            <textarea id="contenidoPresentacion" name="contenidoPresentacion" placeholder="Escribe tu presentación aquí..." onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }"></textarea><br>
             <button type="submit" id="generarPresentacion">Generar</button>
-            <button onclick="window.location.href = 'index.html';">Regresar</button>
+            <a class="btn btn-back" href="{% url 'administrador' %}">Regresar</a>
         </form>
     </div>
 </body>
 </html>
+
 

@@ -14,6 +14,7 @@ from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 from .forms import ChangeRoleForm
 from django.views.decorators.http import require_POST
+from django.contrib.auth import logout
 
 
 def es_admin(user):
@@ -49,6 +50,11 @@ def reset_password(request):
 def lista_usuarios(request):
     usuarios = User.objects.all()
     return render(request, 'lista_usuarios.html', {'usuarios': usuarios})
+
+def cerrar_sesion(request):
+    logout(request)
+    # Redirigir al usuario a alguna página después de cerrar sesión
+    return redirect('homepage')
 
 @user_passes_test(es_admin)
 @require_POST
