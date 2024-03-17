@@ -15,11 +15,11 @@ from django.shortcuts import get_object_or_404
 from .forms import ChangeRoleForm
 from django.views.decorators.http import require_POST
 from django.contrib.auth import logout
-
+from django.contrib.auth.forms import UserChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 def es_admin(user):
     return user.is_superuser
-
 
 def homepage(request):
     if request.method == 'POST':
@@ -101,4 +101,36 @@ def register(request):
 @user_passes_test(es_admin)
 def presentaciones(request):
     return render(request, 'presentaciones.html')
-    
+
+
+def perfil(request):
+    if request.method == 'POST':
+        # Obtener el usuario actual
+        user = request.user
+        # Obtener el nuevo nombre de usuario del formulario
+        new_username = request.POST.get('username')
+        # Obtener las nuevas contraseñas del formulario
+        new_password1 = request.POST.get('password1')
+        new_password2 = request.POST.get('password2')
+
+        # Verificar si el nuevo nombre de usuario no está vacío y no es igual al nombre de usuario actual
+        if new_username and new_username != user.username:
+            user.username = new_username
+            user.save()
+            messages.success(request, 'Nombre de usuario actualizado exitosamente')
+
+        # Verificar si las nuevas contraseñas no están vacías y son iguales
+        if new_password1 and new_password1 == new_password2:
+            user.set_password(new_password1)
+            user.save()
+            # Mantener la sesión autenticada después de cambiar la contraseña
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Contraseña actualizada exitosamente')
+        elif new_password1 or new_password2:
+            messages.error(request, 'Las contraseñas no coinciden')
+
+        # Redirigir a la misma página para evitar problemas de recarga de formularios
+        return redirect('perfil')
+
+    # Si la solicitud no es POST, simplemente renderiza la página de perfil
+    return render(request, 'perfil.html')
