@@ -1,75 +1,20 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Presentaciones</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        button {
-            padding: 5px 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .regresar {
-            text-align: center;
-        }
-        .regresar button {
-            background-color: #28a745;
-        }
-        .regresar button:hover {
-            background-color: #218838;
-        }
-    </style>
+    <title>Mi sitio web</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Lista de Presentaciones</h1>
-        <ul>
-            {% for presentacion in presentaciones %}
-                <li>{{ presentacion }}
-                    <button>Editar</button>
-                    <button>Eliminar</button>
-                </li>
-            {% endfor %}
-        </ul>
-        <div class="regresar">
-            <button>Regresar</button>
-        </div>
-    </div>
+    <h1>Lista de Archivos de Texto</h1>
+    
+
+    <ul>
+        {% for archivo in archivos %}
+        <li>
+            <strong>{{ archivo.nombre }}</strong><br>
+            <a href="{{ archivo.archivo.url }}" target="_blank">Descargar Archivo</a>
+        </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

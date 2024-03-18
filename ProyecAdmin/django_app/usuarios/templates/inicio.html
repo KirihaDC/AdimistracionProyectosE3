@@ -5,67 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bienvenido al Sistema de Presentaciones</title>
     <style>
+        /* Estilos CSS aquí */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
         header {
             background-color: #333;
             color: #fff;
-            padding: 10px;
+            padding: 10px 0;
             text-align: center;
-            margin-bottom: 20px;
         }
         nav {
-            float: left;
-            width: 20%;
-            background-color: #f2f2f2;
-            padding: 20px;
-            height: calc(100vh - 40px);
-            overflow-y: auto;
+            text-align: center;
+            margin-top: 20px;
         }
         nav ul {
             list-style-type: none;
             padding: 0;
         }
         nav ul li {
-            margin-bottom: 10px;
+            display: inline;
+            margin-right: 20px;
         }
         nav ul li a {
-            text-decoration: none;
             color: #333;
+            text-decoration: none;
             font-weight: bold;
-            display: block;
-            padding: 10px;
-            border-radius: 5px;
         }
         nav ul li a:hover {
-            background-color: #ddd;
+            color: #666;
         }
         section {
-            float: left;
-            width: 80%;
             padding: 20px;
             background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            margin-bottom: 20px;
+            margin-top: 20px;
+            text-align: center;
         }
-        form {
-            display: inline-block;
-        }
-        button {
-            padding: 10px 20px;
+        footer {
             background-color: #333;
             color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #555;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
     </style>
 </head>
@@ -73,25 +64,6 @@
     <header>
         <h1>Bienvenido al Sistema de Presentaciones</h1>
     </header>
-<<<<<<< HEAD
-    <nav>
-        <ul>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="#">Perfil</a></li>
-            <li><a href="#">Presentaciones</a></li>
-            <li>
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Cerrar Sesión</button>
-                </form>
-            </li>
-        </ul>
-    </nav>
-    <section>
-        <h2>Contenido de la página</h2>
-        <p>Aquí puedes agregar el contenido específico de cada sección de tu sistema de presentaciones.</p>
-    </section>
-=======
     <div class="container">
         <nav>
             <ul>
@@ -109,6 +81,6 @@
     <footer>
         <p>Derechos de autor &copy; 2024 Mi Sitio Web</p>
     </footer>
->>>>>>> 7f8bfaaf9f9164cb6092d9e3f6351748220d3a68
 </body>
 </html>
+

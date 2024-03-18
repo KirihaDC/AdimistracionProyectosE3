@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 from presentaciones.views import presentaciones
-from presentaciones.views import presentaciones_view
 
 urlpatterns = [
     path('', views.homepage, name='homepage'),
@@ -15,12 +14,5 @@ urlpatterns = [
     path('eliminar_usuario/<int:usuario_id>/', views.eliminar_cuenta, name='eliminar_usuario'),
     path('help/', views.help, name='help'),
     path('cerrar-sesion/', views.cerrar_sesion, name='cerrar_sesion'),
-<<<<<<< HEAD
-    path('logout/', views.logout_view, name='logout'),
-    path('presentaciones_lista/', presentaciones_view, name='presentaciones_lista'),
-
-
-=======
     path('perfil/', views.perfil, name='perfil'),
->>>>>>> 7f8bfaaf9f9164cb6092d9e3f6351748220d3a68
 ]
