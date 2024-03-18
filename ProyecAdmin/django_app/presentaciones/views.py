@@ -3,6 +3,8 @@ from .models import Presentacion
 from django.views.generic import ListView
 from .forms import CrearArchivoForm
 from .forms import CrearArchivoForm
+import os
+from django.conf import settings
 #
 from django.views.generic import ListView
 #
@@ -46,5 +48,9 @@ def crear_archivo(request):
     return render(request, 'crear_archivo.html', {'form': form})
 
 def presentaciones(request):
-    return render(request, 'Presentaciones.html')
+   return render(request, 'Presentaciones.html')
 
+def presentaciones_view(request):
+    presentaciones_dir = os.path.join(settings.BASE_DIR, 'PresentacionesTXT')
+    presentaciones = os.listdir(presentaciones_dir)
+    return render(request, 'presentacion_list.html', {'presentaciones': presentaciones})
