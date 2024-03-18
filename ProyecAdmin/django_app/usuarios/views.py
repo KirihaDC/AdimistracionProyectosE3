@@ -56,6 +56,10 @@ def cerrar_sesion(request):
     # Redirigir al usuario a alguna página después de cerrar sesión
     return redirect('homepage')
 
+def logout_view(request):
+    logout(request)
+    return redirect('homepage')
+
 @user_passes_test(es_admin)
 @require_POST
 def cambiar_rol(request, usuario_id):
