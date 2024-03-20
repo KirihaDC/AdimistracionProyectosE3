@@ -123,21 +123,48 @@
             // Inicializa mostrando la primera diapositiva
             changeSlide(0);
         });
+
+       
+        
     </script>
 </head>
 
 <body>
     <div id="contenido">
         <h1>Generación de Presentaciones</h1>
-        <form action="#">
+        <form action="#" id="formularioPresentacion" action="{% url 'crear_archivo' %}" method="post">
+            {% csrf_token %}
             <label for="tituloPresentacion">Título de la presentación:</label><br>
             <textarea id="tituloPresentacion" name="tituloPresentacion" placeholder="Escribe tu título aquí..." onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }"></textarea><br>
             <label for="contenidoPresentacion">Contenido de la presentación:</label><br>
             <textarea id="contenidoPresentacion" name="contenidoPresentacion" placeholder="Escribe tu presentación aquí..." onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }"></textarea><br>
+            {{ form.as_p }}
             <button type="submit" id="generarPresentacion">Generar</button>
             <a class="btn btn-back" href="{% url 'administrador' %}">Regresar</a>
         </form>
     </div>
+    <script>
+         document.getElementById("generarPresentacion").addEventListener("click", function() {
+            //alert('Presionaste el boton.');
+            //console.log("Se hizo clic en el botón 'Generar'");
+            event.preventDefault(); // Prevenir el envío del formulario por defecto
+            var titulo = document.getElementById("tituloPresentacion").value;
+            var contenido = document.getElementById("contenidoPresentacion").value;
+            var formData = new FormData();
+            formData.append('titulo', titulo);
+            formData.append('contenido', contenido);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', "{% url 'crear_archivo' %}");
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    alert('El archivo se ha guardado correctamente.');
+                } else {
+                    alert('Hubo un error al guardar el archivo.');
+                }
+            };
+            xhr.send(formData);
+        });
+    </script>
 </body>
 </html>
 
