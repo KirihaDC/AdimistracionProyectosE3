@@ -1,0 +1,25 @@
+<Titulo> Este es un titulo </Titulo>
+Hola Juan Caglos
+y esta es mi primera diapositiva
+con varias lineas
+
+<Titulo>Este es otro titulo</Titulo>
+Kiubo tilin.
+
+<Titulo> Este es un título </Titulo>
+<Red>Este texto es rojo.</Red>
+<Blue>Este texto es azul.</Blue>
+<Green>Este texto es verde.</Green>
+<Yllw>Este texto es amarillo.</Yllw>
+<Black>Este texto es negro.</Black>
+<Orge>Este texto es naranja.</Orge>
+<Brwn>Este texto es café.</Brwn>
+
+<Titulo> Otro título </Titulo>
+<Red>Este texto también es rojo.</Red>
+<Blue>Este texto también es azul.</Blue>
+<Green>Este texto también es verde.</Green>
+<Yllw>Este texto también es amarillo.</Yllw>
+<Black>Este texto también es negro.</Black>
+<Orge>Este texto también es naranja.</Orge>
+<Brwn>Este texto también es café.</Brwn>
