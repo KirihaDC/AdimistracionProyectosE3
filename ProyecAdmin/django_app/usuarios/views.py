@@ -19,6 +19,8 @@ from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth import update_session_auth_hash
 import os
 
+from .forms import PasswordResetForm, PasswordResetConfirmForm
+from django.contrib.auth import get_user_model
 
 def es_admin(user):
     return user.is_superuser
@@ -46,8 +48,40 @@ def administrador(request):
     return render(request, 'administrador.html')
 
 
+User = get_user_model()
 def reset_password(request):
-    return render(request, 'reset_password.html')
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            # Verificar si el nombre de usuario y el correo electrónico coinciden
+            try:
+                user = User.objects.get(username=username, email=email)
+            except User.DoesNotExist:
+                user = None
+            
+            if user:
+                # Si coinciden, redirigir a la página de cambio de contraseña
+                return redirect('change_password', user_id=user.id)  # Pasar el user_id
+            else:
+                messages.error(request, 'El nombre de usuario y el correo electrónico no coinciden.')
+    else:
+        form = PasswordResetForm()
+    return render(request, 'reset_password.html', {'form': form})
+
+
+def change_password(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if request.method == 'POST':
+        form = PasswordResetConfirmForm(user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return redirect('homepage')
+    else:
+        form = PasswordResetConfirmForm(user)
+    return render(request, 'change_password.html', {'form': form})
 
 def lista_usuarios(request):
     usuarios = User.objects.all()
