@@ -16,4 +16,5 @@ urlpatterns = [
     path('help/', views.help, name='help'),
     path('cerrar-sesion/', views.cerrar_sesion, name='cerrar_sesion'),
     path('perfil/', views.perfil, name='perfil'),
+    path('leer_archivo/', views.leer_archivo, name='leer_archivo'),
 ]

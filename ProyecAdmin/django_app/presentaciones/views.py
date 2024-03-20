@@ -54,4 +54,5 @@ def crear_archivo(request):
 
 def presentaciones(request):
     return render(request, 'Presentaciones.html')
-
+def lista_presentaciones(request):
+    return render(request, 'presentacion_list.html')
