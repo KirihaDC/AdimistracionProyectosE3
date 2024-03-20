@@ -84,9 +84,12 @@
             </ul>
         </nav>
     </div>
-
+    
     <!-- version 2 -->
     <div class="container">
+        <br><button type="button" onclick="pantallaCompleta(document.documentElement)">Pantalla Completa</button>
+        <br><button type="button" onclick="cancelarPantallaCompleta()">Salir de Pantalla Completa</button>
+        <br> <em>O simplemente presiona fn+F11 para cambiar a pantalla completa.</em></br>
         {% for titulo, parrafos in diapositivas %}
             <div class="slide">
                 {{ titulo|safe }}
@@ -139,6 +142,27 @@
             prevSlide();
         }
         });
+
+        //Codigo para lanzar la pantalla completa desde un boton
+        function pantallaCompleta(element) {
+            if(element.requestFullScreen) {
+                element.requestFullScreen();
+            } else if(element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if(element.webkitRequestFullScreen) {
+                element.webkitRequestFullScreen();
+            }
+        }
+        // Lanza en pantalla completa en navegadores que lo soporten
+        function cancelarPantallaCompleta() {
+            if(document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if(document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if(document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+        }
 
     </script>
 
