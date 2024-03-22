@@ -47,6 +47,31 @@ def inicio(request):
 def administrador(request):
     return render(request, 'administrador.html')
 
+@user_passes_test(es_admin)
+def registro_usuario(request):
+    if request.method == 'POST':
+        correo = 'correo@prueba.com'
+        nombre_usuario = request.POST['nombre_usuario']
+        contraseña = request.POST['contraseña']
+        confirmar_contraseña = request.POST['confirmar_contraseña']
+        # Verificar si las contraseñas coinciden
+        if contraseña != confirmar_contraseña:
+            messages.error(request, 'Las contraseñas no coinciden')
+            return redirect('registro')
+        # Crear un nuevo usuario
+        user = User.objects.create_user(username=nombre_usuario, email=correo, password=contraseña)
+        user.save()
+        messages.success(request, 'Usuario registrado exitosamente')
+        return redirect('homepage')
+    return render(request, 'registro.html')
+
+@login_required
+def eliminar_perfil(request):
+    if request.method == 'DELETE':
+        request.user.delete() 
+        return HttpResponse(status=204)  
+    else:
+        return HttpResponse(status=405)  
 
 User = get_user_model()
 def reset_password(request):
@@ -91,6 +116,23 @@ def cerrar_sesion(request):
     logout(request)
     # Redirigir al usuario a alguna página después de cerrar sesión
     return redirect('homepage')
+
+def registro_usuarios(request):
+    if request.method == 'POST':
+        correo = request.POST['correo']
+        nombre_usuario = request.POST['nombre_usuario']
+        contraseña = request.POST['contraseña']
+        confirmar_contraseña = request.POST['confirmar_contraseña']
+        # Verificar si las contraseñas coinciden
+        if contraseña != confirmar_contraseña:
+            messages.error(request, 'Las contraseñas no coinciden')
+            return redirect('registro_usuarios')
+        # Crear un nuevo usuario
+        user = User.objects.create_user(username=nombre_usuario, email=correo, password=contraseña)
+        user.save()
+        messages.success(request, 'Usuario registrado exitosamente')
+        return redirect('registro_usuarios')
+    return render(request, 'registro_usuarios.html')
 
 @user_passes_test(es_admin)
 @require_POST
