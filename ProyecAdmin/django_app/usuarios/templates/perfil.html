@@ -91,7 +91,11 @@
     </div>
 
     <!-- Botón para regresar a la página de inicio -->
+    {% if es_admin %}
+    <a id="boton_inicio" href="{% url 'administrador' %}"><button>Ir al panel de administrador</button></a>
+{% else %}
     <a id="boton_inicio" href="{% url 'inicio' %}"><button>Regresar a Inicio</button></a>
+{% endif %}
     
     <script>
         function mostrarContraseña() {

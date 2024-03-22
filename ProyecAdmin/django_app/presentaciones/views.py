@@ -5,6 +5,8 @@ from .forms import CrearArchivoForm
 from .forms import CrearArchivoForm
 from django.http import HttpResponse, JsonResponse
 import os
+from django.conf import settings
+from django.contrib import messages
 
 #
 from django.views.generic import ListView
@@ -36,23 +38,42 @@ from django.views.generic import ListView
 
 def crear_archivo(request):
     if request.method == 'POST':
-        form = CrearArchivoForm(request.POST)
-        if form.is_valid():
-            nombre_archivo = request.POST.get('titulo')
-            contenido = request.POST.get('contenido')
-            ruta_proyecto = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            ruta_archivo = os.path.join(ruta_proyecto, 'PresentacionesTXT', '{nombre_archivo}.txt')
-            try:
-                with open(ruta_archivo, 'w') as archivo:
-                    archivo.write(contenido)
-                return JsonResponse({'mensaje': 'Archivo guardado correctamente.'})
-            except Exception as e:
-                return JsonResponse({'mensaje': f'Error al guardar el archivo: {str(e)}'}, status=500)            
-    else:
-        #return JsonResponse({'mensaje': 'Método no permitido.'}, status=405)
-        return render(request, 'crear_archivo.html', {'form': form})
+        titulo = request.POST.get('tituloPresentacion', '')
+        contenido = request.POST.get('contenidoPresentacion', '')
+
+        # Aquí se escribe el contenido en el archivo de texto
+        try:
+            # Directorio donde se almacenarán los archivos de texto
+            directorio = 'PresentacionesTXT'
+            if not os.path.exists(directorio):
+                os.makedirs(directorio)
+            
+            # Ruta del archivo de texto
+            ruta_archivo = os.path.join(directorio, f'{titulo}.txt')
+
+            # Escribir el contenido en el archivo
+            with open(ruta_archivo, 'w') as archivo:
+                archivo.write(contenido)
+
+            # Mensaje de éxito
+            mensaje = 'La presentación se generó correctamente.'
+            return render(request, 'Presentaciones.html', {'mensaje': mensaje})
+        except Exception as e:
+            # Mensaje de error
+            mensaje = f'Error al generar el archivo: {e}'
+            return render(request, 'Presentaciones.html', {'mensaje': mensaje})
+
+    return HttpResponse('No se pudo generar el archivo')
 
 def presentaciones(request):
     return render(request, 'Presentaciones.html')
+
 def lista_presentaciones(request):
-    return render(request, 'presentacion_list.html')
+    # Directorio donde se encuentran los archivos de texto
+    directorio = os.path.join(settings.BASE_DIR, 'PresentacionesTXT')
+
+    # Obtener una lista de todos los archivos en el directorio
+    archivos = os.listdir(directorio)
+
+    # Pasar la lista de archivos a la plantilla
+    return render(request, 'presentacion_list.html', {'archivos': archivos})

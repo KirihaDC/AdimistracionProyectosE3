@@ -71,101 +71,57 @@
             background-color: #999;
         }
     </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            let currentSlide = 0; // Índice de la diapositiva actual
-            const slides = document.querySelectorAll('.slide'); // Selecciona todas las diapositivas
-
-            function changeSlide(move) {
-                currentSlide += move;
-
-                // Verifica los límites
-                if (currentSlide >= slides.length) {
-                    currentSlide = 0;
-                } else if (currentSlide < 0) {
-                    currentSlide = slides.length - 1;
-                }
-
-                // Oculta todas las diapositivas
-                slides.forEach(slide => {
-                    slide.style.display = 'none';
-                });
-
-                // Muestra la diapositiva actual
-                slides[currentSlide].style.display = 'block';
-            }
-
-            // Evento de teclado
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight') { // Flecha derecha para avanzar
-                    changeSlide(1);
-                } else if (e.key === 'ArrowLeft') { // Flecha izquierda para regresar
-                    changeSlide(-1);
-                }
-            });
-
-            // Evento de clic del ratón
-            document.addEventListener('click', (e) => {
-                // Evita el comportamiento predeterminado del clic derecho
-                e.preventDefault();
-                if (e.button === 0) { // Clic izquierdo para regresar
-                    changeSlide(-1);
-                }
-            });
-
-            // Manejo del clic derecho para avanzar
-            document.addEventListener('contextmenu', (e) => {
-                e.preventDefault(); // Evita que se muestre el menú contextual
-                changeSlide(1); // Avanza a la siguiente diapositiva
-            });
-
-            // Inicializa mostrando la primera diapositiva
-            changeSlide(0);
-        });
-
-       
-        
-    </script>
 </head>
 
 <body>
     <div id="contenido">
         <h1>Generación de Presentaciones</h1>
-        <form action="#" id="formularioPresentacion" action="{% url 'crear_archivo' %}" method="post">
+        <form id="formularioPresentacion" action="{% url 'crear_archivo' %}" method="post">
             {% csrf_token %}
             <label for="tituloPresentacion">Título de la presentación:</label><br>
             <textarea id="tituloPresentacion" name="tituloPresentacion" placeholder="Escribe tu título aquí..." onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }"></textarea><br>
             <label for="contenidoPresentacion">Contenido de la presentación:</label><br>
             <textarea id="contenidoPresentacion" name="contenidoPresentacion" placeholder="Escribe tu presentación aquí..." onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }"></textarea><br>
             {{ form.as_p }}
-            <button type="submit" id="generarPresentacion">Generar</button>
+            <button type="button" id="generarPresentacion">Generar</button>
             <a class="btn btn-back" href="{% url 'administrador' %}">Regresar</a>
         </form>
     </div>
+
+    <!-- Modal para mostrar mensajes -->
+    <div id="mensajeModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="mensajeTexto"></p>
+        </div>
+    </div>
+
     <script>
-         document.getElementById("generarPresentacion").addEventListener("click", function() {
-            //alert('Presionaste el boton.');
-            //console.log("Se hizo clic en el botón 'Generar'");
-            event.preventDefault(); // Prevenir el envío del formulario por defecto
-            var titulo = document.getElementById("tituloPresentacion").value;
-            var contenido = document.getElementById("contenidoPresentacion").value;
-            var formData = new FormData();
-            formData.append('titulo', titulo);
-            formData.append('contenido', contenido);
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', "{% url 'crear_archivo' %}");
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    alert('El archivo se ha guardado correctamente.');
-                } else {
-                    alert('Hubo un error al guardar el archivo.');
+        document.getElementById("generarPresentacion").addEventListener("click", function() {
+            var form = document.getElementById("formularioPresentacion");
+            form.submit(); // Envía el formulario de manera estándar
+        });
+
+        // Función para mostrar el mensaje emergente
+        function mostrarMensaje(mensaje) {
+            var modal = document.getElementById("mensajeModal");
+            var mensajeTexto = document.getElementById("mensajeTexto");
+            mensajeTexto.textContent = mensaje;
+            modal.style.display = "block";
+
+            // Cuando el usuario hace clic en (x), cierra el modal
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function() {
+                modal.style.display = "none";
+            };
+
+            // Cuando el usuario hace clic fuera del modal, ciérralo
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
                 }
             };
-            xhr.send(formData);
-        });
+        }
     </script>
 </body>
 </html>
-
-

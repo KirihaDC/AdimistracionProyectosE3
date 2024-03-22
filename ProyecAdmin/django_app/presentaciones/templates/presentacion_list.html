@@ -1,20 +1,107 @@
-{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Mi sitio web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        strong {
+            font-size: 1.2em;
+        }
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .btn-default {
+            color: #333;
+            background-color: #fff;
+            border-color: #ccc;
+        }
+        .btn-default:hover {
+            color: #333;
+            background-color: #e6e6e6;
+            border-color: #adadad;
+        }
+        .btn-danger {
+            color: #fff;
+            background-color: #d9534f;
+            border-color: #d43f3a;
+        }
+        .btn-danger:hover {
+            color: #fff;
+            background-color: #c9302c;
+            border-color: #ac2925;
+        }
+        .btn-success {
+            color: #fff;
+            background-color: #5cb85c;
+            border-color: #4cae4c;
+        }
+        .btn-success:hover {
+            color: #fff;
+            background-color: #449d44;
+            border-color: #398439;
+        }
+    </style>
 </head>
 <body>
-    <h1>Lista de Archivos de Texto</h1>
-    
+    <div class="container">
+        <h1>Lista de Archivos de Texto</h1>
+        <ul>
+            {% for archivo in archivos %}
+            <li>
+                <strong>{{ archivo }}</strong><br>
+                <button class="btn btn-danger" onclick="eliminar('{{ archivo }}')">Eliminar</button>
+                <button class="btn btn-success" onclick="editar('{{ archivo }}')">Editar</button>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+        function eliminar(nombreArchivo) {
+            // Lógica para eliminar el archivo
+            console.log('Eliminar', nombreArchivo);
+            // Aquí puedes agregar la lógica para eliminar el archivo con AJAX u otra técnica
+        }
 
-    <ul>
-        {% for archivo in archivos %}
-        <li>
-            <strong>{{ archivo.nombre }}</strong><br>
-            <a href="{{ archivo.archivo.url }}" target="_blank">Descargar Archivo</a>
-        </li>
-        {% endfor %}
-    </ul>
+        function editar(nombreArchivo) {
+            // Lógica para editar el archivo
+            console.log('Editar', nombreArchivo);
+            // Aquí puedes agregar la lógica para editar el archivo
+        }
+    </script>
 </body>
 </html>
