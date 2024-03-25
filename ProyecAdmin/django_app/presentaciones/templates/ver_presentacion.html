@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentación de Diapositivas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .slideshow-container {
+      position: relative;
+      width: 100vw; /* Ocupa todo el ancho de la pantalla */
+      height: 100vh; /* Ocupa todo el alto de la pantalla */
+      border: 2px solid black; /* Añade un borde negro */
+      box-sizing: border-box; /* El tamaño total del contenedor incluirá el borde */
+      overflow: hidden; /* Evita la barra de desplazamiento */
+    }
+
+    .slideshow {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slide {
+      display: none;
+    }
+
+    .page-counter {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      color: white;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="slideshow-container">
+  <div class="slideshow">
+    <div class="slide">
+      <img src="imagen1.jpg" alt="Página 1">
+    </div>
+    <div class="slide">
+      <img src="imagen2.jpg" alt="Página 2">
+    </div>
+    <div class="slide">
+      <img src="imagen3.jpg" alt="Página 3">
+    </div>
+  </div>
+  <div class="page-counter">Página 1</div>
+</div>
+
+<script>
+  var slideIndex = 1;
+  showSlides(slideIndex);
+
+  function plusSlides(n) {
+    showSlides(slideIndex += n);
+  }
+
+  function showSlides(n) {
+    var i;
+    var slides = document.getElementsByClassName("slide");
+    if (n > slides.length) {slideIndex = 1}
+    if (n < 1) {slideIndex = slides.length}
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    slides[slideIndex-1].style.display = "block";
+
+    // Actualizar el contador de páginas
+    document.querySelector('.page-counter').innerText = "Página " + slideIndex;
+  }
+
+  document.addEventListener('keydown', function(event) {
+    if (event.keyCode == 37) { // Flecha izquierda
+      plusSlides(-1);
+    } else if (event.keyCode == 39) { // Flecha derecha
+      plusSlides(1);
+    }
+  });
+</script>
+
+</body>
+</html>
+
