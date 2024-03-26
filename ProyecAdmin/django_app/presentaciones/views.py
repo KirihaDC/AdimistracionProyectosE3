@@ -180,4 +180,4 @@ def ver_presentacion(request):
         if titulo_actual or contenido_actual:
             diapositivas.append((titulo_actual, contenido_actual))
 
-        return render(request, 'archivoTexto.html', {'diapositivas': diapositivas})
+        return render(request, 'ver_presentacion.html', {'diapositivas': diapositivas})

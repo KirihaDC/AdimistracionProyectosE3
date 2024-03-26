@@ -51,7 +51,7 @@
         }
         footer {
             background-color: #333;
-            color: #fff;
+            color: white;
             text-align: center;
             padding: 10px 0;
             position: fixed;
@@ -64,10 +64,47 @@
             padding: 10%;
             background-color: #dddddd;
             border-radius: 15px;
+            margin-bottom: 10%;
         }
         .current-slide {
             display: block;
         }
+
+        .fullscreen {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 8px;
+        }
+
+        .fullscreen-btn{
+            position: absolute;
+            right: 80px;
+            aling: right;
+            display: inline-block;
+            outline: none;
+            cursor: pointer;
+            font-size: 10px;
+            line-height: 1;
+            border-radius: 500px;
+            transition-property: background-color,border-color,color,box-shadow,filter;
+            transition-duration: .3s;
+            border: 1px solid transparent;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: normal;
+            font-weight: 500;
+            text-align: center;
+            padding: 4px
+            color: #616467;
+            box-shadow: inset 0 0 0 2px #616467;
+            background-color: transparent;
+            height: 30px;
+            :hover{
+                color: #fff;
+                background-color: #616467;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -79,17 +116,18 @@
             <ul>
                 <li><a href="{% url 'inicio' %}">Inicio</a></li>
                 <li><a href="{% url 'perfil' %}">Perfil</a></li>
-                <li><a href="#">Lista de Presentaciones</a></li>
-                <li><a href="#">Cerrar Sesión</a></li>
+                <li><a href="{% url 'lista_presentaciones' %}">Lista de Presentaciones</a></li>
+                <li><a href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a></li>
             </ul>
         </nav>
     </div>
     
     <!-- version 2 -->
+    <div class="fullscreen">
+        <button type="button" class="fullscreen-btn" onclick="toggleFullScreen()">Pantalla Completa</button>
+    </div>
+
     <div class="container">
-        <br><button type="button" onclick="pantallaCompleta(document.documentElement)">Pantalla Completa</button>
-        <br><button type="button" onclick="cancelarPantallaCompleta()">Salir de Pantalla Completa</button>
-        <br> <em>O simplemente presiona fn+F11 para cambiar a pantalla completa.</em></br>
         {% for titulo, parrafos in diapositivas %}
             <div class="slide">
                 {{ titulo|safe }}
@@ -125,6 +163,10 @@
             showSlide(currentSlide);
         }
 
+        document.addEventListener('DOMContentLoaded', function() {
+            showSlide(0);
+        });
+
         // Control con las flechas del teclado.
         document.addEventListener('keydown', (event) => {
             if (event.key === 'ArrowLeft') {
@@ -143,24 +185,15 @@
         }
         });
 
-        //Codigo para lanzar la pantalla completa desde un boton
-        function pantallaCompleta(element) {
-            if(element.requestFullScreen) {
-                element.requestFullScreen();
-            } else if(element.mozRequestFullScreen) {
-                element.mozRequestFullScreen();
-            } else if(element.webkitRequestFullScreen) {
-                element.webkitRequestFullScreen();
-            }
-        }
-        // Lanza en pantalla completa en navegadores que lo soporten
-        function cancelarPantallaCompleta() {
-            if(document.cancelFullScreen) {
-                document.cancelFullScreen();
-            } else if(document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if(document.webkitCancelFullScreen) {
-                document.webkitCancelFullScreen();
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                document.querySelector('.fullscreen-btn').textContent = "Salir de Pantalla Completa";
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    document.querySelector('.fullscreen-btn').textContent = "Pantalla Completa";
+                }
             }
         }
 

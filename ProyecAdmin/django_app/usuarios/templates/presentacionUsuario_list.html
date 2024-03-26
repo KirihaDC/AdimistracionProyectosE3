@@ -1,22 +1,37 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido al Sistema de Presentaciones</title>
+    <title>Mi sitio web</title>
     <style>
-        /* Estilos CSS aquí */
         body {
             font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
         }
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
+
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        strong {
+            font-size: 1.2em;
+        }
+
         header {
             background-color: #333;
             color: #fff;
@@ -48,11 +63,14 @@
         }
         section {
             padding: 20px;
+            max-width: 80%;
+            margin: 0 auto;
             background-color: #fff;
             margin-top: 20px;
             text-align: left;
-            border-radius: 5px;
+            border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10%;
         }
         section h2 {
             margin-bottom: 20px;
@@ -73,32 +91,79 @@
             color: #fff;
             text-align: center;
             padding: 10px 0;
-            position: fixed;
             bottom: 0;
             width: 100%;
+            position: fixed;
         }
+
+        .btn {
+            aling: right;
+            display: inline-block;
+            outline: none;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+            border-radius: 500px;
+            transition-property: background-color,border-color,color,box-shadow,filter;
+            transition-duration: .3s;
+            border: 1px solid transparent;
+            letter-spacing: 2px;
+            min-width: 160px;
+            text-transform: uppercase;
+            white-space: normal;
+            font-weight: 700;
+            text-align: center;
+            padding: 16px 14px 18px;
+            color: #616467;
+            box-shadow: inset 0 0 0 2px #616467;
+            background-color: transparent;
+            height: 48px;
+            :hover{
+                color: #fff;
+                background-color: #616467;
+            }
+        }
+
+
     </style>
 </head>
 <body>
     <header>
-        <h1>Bienvenido al Sistema de Presentaciones</h1>
+        <h1>Lista de Presentaciones</h1>
     </header>
+
     <div class="container">
-        <nav>
+         <nav>
             <ul>
-                <li><a href="#">Inicio</a></li>
+                <li><a href="{% url 'inicio' %}">Inicio</a></li>
                 <li><a href="{% url 'perfil' %}">Perfil</a></li>
-                <li><a href="{% url 'lista_presentacionesUsuario' %}">Lista Presentaciones</a></li>
                 <li><a href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a></li>
             </ul>
         </nav>
+
         <section>
-            <h2>¡Bienvenido al Sistema de Presentaciones!</h2>
-            <p>Este es un sistema de presentaciones en línea. ¡Esperamos que disfrutes utilizando nuestras herramientas!</p>
+            <ul>
+                {% for archivo in archivos %}
+                <li>
+                    <strong>{{ archivo }}</strong><br>
+                    <button class="btn btn-primary" onclick="verPresentacion('{{ archivo }}')">Ver Presentación</button>
+                </li>
+                {% endfor %}
+            </ul>
         </section>
+
     </div>
+
     <footer>
         <p>Derechos de autor &copy; 2024 Mi Sitio Web</p>
     </footer>
+
+    <script>
+        function verPresentacion(nombreArchivo) {
+        window.location.href = "{% url 'leer_archivo' %}?archivo=" + nombreArchivo;
+        }
+
+    </script>
 </body>
 </html>
+
