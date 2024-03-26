@@ -81,6 +81,7 @@
     <div class="container">
         <h1>Lista de Archivos de Texto</h1>
         <ul>
+            <a class="btn btn-back" href="{% url 'administrador' %}">Regresar</a>
             {% for archivo in archivos %}
             <li>
                 <strong>{{ archivo }}</strong><br>
