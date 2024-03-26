@@ -140,14 +140,44 @@ def editar_presentacion(request):
 def ver_presentacion(request):
     if 'archivo' in request.GET:
         nombre_archivo = request.GET['archivo']
-        directorio = 'PresentacionesTXT'
-        ruta_archivo = os.path.join(directorio, nombre_archivo)
+        ruta_proyecto = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        ruta_archivo = os.path.join(ruta_proyecto, 'PresentacionesTXT', nombre_archivo)
 
-        contenido_archivo = ""
-        if os.path.exists(ruta_archivo):
-            with open(ruta_archivo, 'r') as archivo:
-                contenido_archivo = archivo.read()
-        
-        return render(request, 'ver_presentacion.html', {'nombre_archivo': nombre_archivo, 'contenido_archivo': contenido_archivo})
-    else:
-        return HttpResponse("No se proporcionó un archivo para visualizar.")
+        diapositivas = []
+        titulo_actual = ''
+        contenido_actual = []
+        numero_pagina = 1
+
+        with open(ruta_archivo, 'r') as archivo:
+            for linea in archivo:
+                linea = linea.strip()
+
+                if linea.startswith('<Titulo>') and linea.endswith('</Titulo>'):
+                    titulo_actual = f'<strong style="font-size: larger;">{linea[8:-9]}</strong>'  # Quitar etiquetas <Titulo> y </Titulo>
+                    titulo_actual += f'<span style="float: right; font-size: smaller;">Página {numero_pagina}</span>'
+                    numero_pagina += 1
+                else:
+                    # Buscar y reemplazar las etiquetas de color con el código CSS correspondiente
+                    colores = {
+                        'Red': 'color: red;',
+                        'Blue': 'color: blue;',
+                        'Green': 'color: green;',
+                        'Yllw': 'color: yellow;',
+                        'Black': 'color: black;',
+                        'Orge': 'color: orange;',
+                        'Brwn': 'color: brown;'
+                    }
+                    for color, style in colores.items():
+                        linea = linea.replace(f'<{color}>', f'<span style="{style}">').replace(f'</{color}>', '</span>')
+
+                    contenido_actual.append(f'<p>{linea}</p>')
+
+                if not linea or len(linea.strip()) == 0:
+                    diapositivas.append((titulo_actual, contenido_actual))
+                    titulo_actual = ''
+                    contenido_actual = []
+
+        if titulo_actual or contenido_actual:
+            diapositivas.append((titulo_actual, contenido_actual))
+
+        return render(request, 'archivoTexto.html', {'diapositivas': diapositivas})
