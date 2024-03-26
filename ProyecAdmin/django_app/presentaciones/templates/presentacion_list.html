@@ -89,6 +89,7 @@
                     <button type="submit" class="btn btn-danger">Eliminar</button>
                 </form>
                 <button class="btn btn-success" onclick="editar('{{ archivo }}')">Editar</button>
+                <button class="btn btn-primary" onclick="verPresentacion('{{ archivo }}')">Ver Presentación</button>
             </li>
             {% endfor %}
         </ul>
@@ -106,6 +107,10 @@
         function editar(nombreArchivo) {
             // Redireccionar a la página de edición con el nombre del archivo como parámetro
             window.location.href = "/editar_presentacion/?archivo=" + nombreArchivo;
+        }
+
+        function verPresentacion(nombreArchivo) {
+        window.location.href = "{% url 'ver_presentacion' %}?archivo=" + nombreArchivo;
         }
     </script>
 </body>

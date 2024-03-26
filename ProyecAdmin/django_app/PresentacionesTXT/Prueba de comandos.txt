@@ -1,0 +1,12 @@
+% Este es el primer párrafo.
+
+% Este es el segundo párrafo.
+
+--
+
+# Otro Título Principal
+% Este es el primer párrafo del segundo título.
+
+% Este es el segundo párrafo del segundo título.
+
+--
