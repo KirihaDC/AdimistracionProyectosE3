@@ -4,38 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ver Presentación</title>
-    <style>
-        /* Estilos CSS para la presentación */
-        .titulo-principal {
-            text-align: center;
-            color: #007bff;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .parrafo {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-        .diapositiva {
-            page-break-before: always; /* Salto de página antes de cada diapositiva */
-        }
-    </style>
 </head>
 <body>
-    <div class="presentacion">
-        <!-- Iterar sobre las líneas del contenido del archivo -->
-        {% for linea in contenido_archivo.split('\n') %}
-            {% if linea.startswith('#') %}
-                <!-- Si es un título principal, mostrarlo -->
-                <div class="titulo-principal">{{ linea.lstrip('#').strip() }}</div>
-            {% elif linea.startswith('%') %}
-                <!-- Si es un párrafo, mostrarlo -->
-                <div class="parrafo">{{ linea.lstrip('%').strip() }}</div>
-            {% elif linea.startswith('--') %}
-                <!-- Si es una señal de salto de diapositiva, crear un div de diapositiva -->
-                <div class="diapositiva"></div>
-            {% endif %}
-        {% endfor %}
-    </div>
+    <h1>Contenido de la Presentación: {{ nombre_archivo }}</h1>
+    <pre>{{ contenido_archivo }}</pre>
 </body>
 </html>

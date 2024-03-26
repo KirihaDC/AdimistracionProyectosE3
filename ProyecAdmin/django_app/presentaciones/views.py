@@ -151,36 +151,3 @@ def ver_presentacion(request):
         return render(request, 'ver_presentacion.html', {'nombre_archivo': nombre_archivo, 'contenido_archivo': contenido_archivo})
     else:
         return HttpResponse("No se proporcionó un archivo para visualizar.")
-
-def procesar_contenido(archivo):
-    with open(archivo, 'r') as f:
-        contenido = f.read()
-
-    # Dividir el contenido en líneas
-    lineas = contenido.split('\n')
-
-    titulos = []
-    parrafos = []
-    diapositivas = []
-
-    for linea in lineas:
-        linea = linea.strip()
-
-        if linea.startswith('#'):
-            # Es un título principal
-            titulos.append(linea.lstrip('#').strip())  # Elimina el '#' y añade el título sin espacios al inicio y final
-        elif linea.startswith('%'):
-            # Es un párrafo
-            parrafos.append(linea.lstrip('%').strip())  # Elimina el '%' y añade el párrafo sin espacios al inicio y final
-        elif linea.startswith('--'):
-            # Es una señal de salto de diapositiva
-            diapositivas.append(True)
-
-    return titulos, parrafos, diapositivas
-
-def vista_presentacion(request):
-    archivo = 'contenido.txt'
-    titulos, parrafos, diapositivas = procesar_contenido(archivo)
-
-    # Pasar los datos procesados al template
-    return render(request, 'presentacion.html', {'titulos': titulos, 'parrafos': parrafos, 'diapositivas': diapositivas})
