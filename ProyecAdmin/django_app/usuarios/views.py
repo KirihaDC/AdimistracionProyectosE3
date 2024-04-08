@@ -44,7 +44,6 @@ def homepage(request):
 def inicio(request):
     return render(request, 'inicio.html')
 
-@user_passes_test(es_admin)
 def administrador(request):
     return render(request, 'administrador.html')
 
@@ -157,7 +156,6 @@ def eliminar_cuenta(request, usuario_id):
     else:
         return render({'mensaje': 'El usuario no existe'}, status=400)
 
-@user_passes_test(es_admin)
 def help(request):
     return render(request, 'help.html')
     

@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from usuarios.views import administrador
 
 urlpatterns = [
     #path('archivos/', PresentacionListView.as_view(), name='archivo_texto_list'),
@@ -9,4 +10,5 @@ urlpatterns = [
     path('editar_presentacion/', views.editar_presentacion, name='editar_presentacion'),
     path('eliminar_archivo/<str:nombre_archivo>/', views.eliminar_archivo, name='eliminar_archivo'),
     path('ver_presentacion/', views.ver_presentacion, name='ver_presentacion'),
+    path('administrador/', administrador, name='administrador'),
 ]

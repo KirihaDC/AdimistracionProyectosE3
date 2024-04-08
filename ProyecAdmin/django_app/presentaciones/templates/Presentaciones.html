@@ -74,11 +74,26 @@
 </head>
 
 <body>
-    
     <div id="contenido">
         <h1>Generación de Presentaciones</h1>
         <form id="formularioPresentacion" action="{% url 'crear_archivo' %}" method="post">
             {% csrf_token %}
+            <details>
+                <summary>Nomenclatura</summary>
+                <p>
+                    &lt;Titulo&gt; Este es un título &lt;/Titulo&gt;<br>
+                    &lt;Red&gt; Este texto es rojo. &lt;/Red&gt;<br>
+                    &lt;Blue&gt; Este texto es azul. &lt;/Blue&gt;<br>
+                    &lt;Green&gt; Este texto es verde. &lt;/Green&gt;<br>
+                    &lt;Yllw&gt; Este texto es amarillo. &lt;/Yllw&gt;<br>
+                    &lt;Black&gt; Este texto es negro. &lt;/Black&gt;<br>
+                    &lt;Orge&gt; Este texto es naranja. &lt;/Orge&gt;<br>
+                    &lt;Brwn&gt; Este texto es café. &lt;/Brwn&gt;<br>
+                    Para poner texto no se requiere de nada especial<br>
+                    Para saltar a otra diapositiva, hacer doble Enter<br>
+                    hasta que quede un espacio en blanco entre cada parrafo
+                </p>
+                </details>
             <label for="tituloPresentacion">Título de la presentación:</label><br>
             <textarea id="tituloPresentacion" name="tituloPresentacion" placeholder="Escribe tu título aquí..." onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }"></textarea><br>
             <label for="contenidoPresentacion">Contenido de la presentación:</label><br>
