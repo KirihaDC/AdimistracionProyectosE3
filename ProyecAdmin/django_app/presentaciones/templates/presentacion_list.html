@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mi sitio web</title>
+    <title>Lista de Presentaciones</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -80,14 +80,14 @@
 <body>
     <div class="container">
         <h1>Lista de Archivos de Texto</h1>
+        <a class="btn btn-back" href="{% url 'administrador' %}">Regresar</a>
         <ul>
-            <a class="btn btn-back" href="{% url 'administrador' %}">Regresar</a>
             {% for archivo in archivos %}
             <li>
                 <strong>{{ archivo }}</strong><br>
-                <form method="post" action="{% url 'eliminar_archivo' archivo %}">
+                <form method="post" action="{% url 'eliminar_archivo' archivo %}" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <button type="submit" class="btn btn-danger" onclick="return eliminar('{{ archivo }}');">Eliminar</button>
                 </form>
                 <button class="btn btn-success" onclick="editar('{{ archivo }}')">Editar</button>
                 <button class="btn btn-primary" onclick="verPresentacion('{{ archivo }}')">Ver Presentación</button>
@@ -98,22 +98,18 @@
 
     <script>
         function eliminar(nombreArchivo) {
-            if (confirm("¿Estás seguro que deseas eliminar el archivo '" + nombreArchivo + "'?")) {
-                // No se necesita hacer nada aquí ya que el formulario se encarga de enviar la solicitud de eliminación.
-            } else {
-                return false; // Evita que el formulario se envíe si se cancela la acción.
-            }
+            return confirm("¿Estás seguro que deseas eliminar el archivo '" + nombreArchivo + "'?");
         }
 
         function editar(nombreArchivo) {
-            // Redireccionar a la página de edición con el nombre del archivo como parámetro
             window.location.href = "/editar_presentacion/?archivo=" + nombreArchivo;
         }
 
         function verPresentacion(nombreArchivo) {
-        window.location.href = "{% url 'ver_presentacion' %}?archivo=" + nombreArchivo;
+            window.location.href = "{% url 'ver_presentacion' %}?archivo=" + nombreArchivo;
         }
     </script>
 </body>
 </html>
+
 
