@@ -1,3 +1,4 @@
+&~ Arial
 <Titulo> Este es un titulo </Titulo>
 Hola Juan Caglos
 y esta es mi primera diapositiva
