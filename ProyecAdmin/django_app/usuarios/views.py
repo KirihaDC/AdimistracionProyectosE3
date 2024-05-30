@@ -17,6 +17,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth import logout
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.conf import settings
 import os
 
 from .forms import PasswordResetForm, PasswordResetConfirmForm
@@ -43,10 +44,34 @@ def homepage(request):
 def inicio(request):
     return render(request, 'inicio.html')
 
-@user_passes_test(es_admin)
 def administrador(request):
     return render(request, 'administrador.html')
 
+@user_passes_test(es_admin)
+def registro_usuario(request):
+    if request.method == 'POST':
+        correo = 'correo@prueba.com'
+        nombre_usuario = request.POST['nombre_usuario']
+        contraseña = request.POST['contraseña']
+        confirmar_contraseña = request.POST['confirmar_contraseña']
+        # Verificar si las contraseñas coinciden
+        if contraseña != confirmar_contraseña:
+            messages.error(request, 'Las contraseñas no coinciden')
+            return redirect('registro')
+        # Crear un nuevo usuario
+        user = User.objects.create_user(username=nombre_usuario, email=correo, password=contraseña)
+        user.save()
+        messages.success(request, 'Usuario registrado exitosamente')
+        return redirect('homepage')
+    return render(request, 'registro.html')
+
+@login_required
+def eliminar_perfil(request):
+    if request.method == 'DELETE':
+        request.user.delete() 
+        return HttpResponse(status=204)  
+    else:
+        return HttpResponse(status=405)  
 
 User = get_user_model()
 def reset_password(request):
@@ -91,6 +116,23 @@ def cerrar_sesion(request):
     logout(request)
     # Redirigir al usuario a alguna página después de cerrar sesión
     return redirect('homepage')
+
+def registro_usuarios(request):
+    if request.method == 'POST':
+        correo = request.POST['correo']
+        nombre_usuario = request.POST['nombre_usuario']
+        contraseña = request.POST['contraseña']
+        confirmar_contraseña = request.POST['confirmar_contraseña']
+        # Verificar si las contraseñas coinciden
+        if contraseña != confirmar_contraseña:
+            messages.error(request, 'Las contraseñas no coinciden')
+            return redirect('registro_usuarios')
+        # Crear un nuevo usuario
+        user = User.objects.create_user(username=nombre_usuario, email=correo, password=contraseña)
+        user.save()
+        messages.success(request, 'Usuario registrado exitosamente')
+        return redirect('registro_usuarios')
+    return render(request, 'registro_usuarios.html')
 
 @user_passes_test(es_admin)
 @require_POST
@@ -138,38 +180,31 @@ def register(request):
 def presentaciones(request):
     return render(request, 'presentaciones.html')
 
-
+@login_required
 def perfil(request):
+    user = request.user
+    
+    # Verificar si el usuario autenticado es un administrador
+    es_admin = user.is_staff
+
     if request.method == 'POST':
-        # Obtener el usuario actual
-        user = request.user
-        # Obtener el nuevo nombre de usuario del formulario
         new_username = request.POST.get('username')
-        # Obtener las nuevas contraseñas del formulario
         new_password1 = request.POST.get('password1')
         new_password2 = request.POST.get('password2')
-
-        # Verificar si el nuevo nombre de usuario no está vacío y no es igual al nombre de usuario actual
         if new_username and new_username != user.username:
             user.username = new_username
             user.save()
             messages.success(request, 'Nombre de usuario actualizado exitosamente')
-
-        # Verificar si las nuevas contraseñas no están vacías y son iguales
         if new_password1 and new_password1 == new_password2:
             user.set_password(new_password1)
             user.save()
-            # Mantener la sesión autenticada después de cambiar la contraseña
             update_session_auth_hash(request, user)
             messages.success(request, 'Contraseña actualizada exitosamente')
         elif new_password1 or new_password2:
             messages.error(request, 'Las contraseñas no coinciden')
-
-        # Redirigir a la misma página para evitar problemas de recarga de formularios
         return redirect('perfil')
 
-    # Si la solicitud no es POST, simplemente renderiza la página de perfil
-    return render(request, 'perfil.html')
+    return render(request, 'perfil.html', {'es_admin': es_admin})
 
 #Este ya funciona
 """def leer_archivo(request): 
@@ -202,44 +237,55 @@ def perfil(request):
 
     return render(request, 'archivoTexto.html', {'diapositivas': diapositivas})"""
 
+def lista_presentacionesUsuario(request):
+    # Directorio donde se encuentran los archivos de texto
+    directorio = os.path.join(settings.BASE_DIR, 'PresentacionesTXT')
+
+    # Obtener una lista de todos los archivos en el directorio
+    archivos = os.listdir(directorio)
+
+    # Pasar la lista de archivos a la plantilla
+    return render(request, 'presentacionUsuario_list.html', {'archivos': archivos})
 
 def leer_archivo(request):
-    ruta_proyecto = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    ruta_archivo = os.path.join(ruta_proyecto, 'PresentacionesTXT', 'Test.txt')
+    if 'archivo' in request.GET:
+        nombre_archivo = request.GET['archivo']
+        ruta_proyecto = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        ruta_archivo = os.path.join(ruta_proyecto, 'PresentacionesTXT', nombre_archivo)
 
-    diapositivas = []
-    titulo_actual = ''
-    contenido_actual = []
-    numero_pagina = 1
+        diapositivas = []
+        titulo_actual = ''
+        contenido_actual = []
+        numero_pagina = 1
 
-    with open(ruta_archivo, 'r') as archivo:
-        for linea in archivo:
-            linea = linea.strip()
+        with open(ruta_archivo, 'r') as archivo:
+            for linea in archivo:
+                linea = linea.strip()
 
-            if linea.startswith('<Titulo>') and linea.endswith('</Titulo>'):
-                titulo_actual = f'<strong style="font-size: larger;">{linea[8:-9]}</strong>'  # Quitar etiquetas <Titulo> y </Titulo>
-                titulo_actual += f'<span style="float: right; font-size: smaller;">Página {numero_pagina}</span>'
-                numero_pagina += 1
-            else:
-                # Buscar y reemplazar las etiquetas de color con el código CSS correspondiente
-                colores = {
-                    'Red': 'color: red;',
-                    'Blue': 'color: blue;',
-                    'Green': 'color: green;',
-                    'Yllw': 'color: yellow;',
-                    'Black': 'color: black;',
-                    'Orge': 'color: orange;',
-                    'Brwn': 'color: brown;'
-                }
-                for color, style in colores.items():
-                    linea = linea.replace(f'<{color}>', f'<span style="{style}">').replace(f'</{color}>', '</span>')
+                if linea.startswith('<Titulo>') and linea.endswith('</Titulo>'):
+                    titulo_actual = f'<strong style="font-size: larger;">{linea[8:-9]}</strong>'  # Quitar etiquetas <Titulo> y </Titulo>
+                    titulo_actual += f'<span style="float: right; font-size: smaller;">Página {numero_pagina}</span>'
+                    numero_pagina += 1
+                else:
+                    # Buscar y reemplazar las etiquetas de color con el código CSS correspondiente
+                    colores = {
+                        'Red': 'color: red;',
+                        'Blue': 'color: blue;',
+                        'Green': 'color: green;',
+                        'Yllw': 'color: yellow;',
+                        'Black': 'color: black;',
+                        'Orge': 'color: orange;',
+                        'Brwn': 'color: brown;'
+                    }
+                    for color, style in colores.items():
+                        linea = linea.replace(f'<{color}>', f'<span style="{style}">').replace(f'</{color}>', '</span>')
 
-                contenido_actual.append(f'<p>{linea}</p>')
+                    contenido_actual.append(f'<p>{linea}</p>')
 
-            if not linea or len(linea.strip()) == 0:
-                diapositivas.append((titulo_actual, contenido_actual))
-                titulo_actual = ''
-                contenido_actual = []
+                if not linea or len(linea.strip()) == 0:
+                    diapositivas.append((titulo_actual, contenido_actual))
+                    titulo_actual = ''
+                    contenido_actual = []
 
     if titulo_actual or contenido_actual:
         diapositivas.append((titulo_actual, contenido_actual))

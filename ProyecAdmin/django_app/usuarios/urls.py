@@ -17,4 +17,8 @@ urlpatterns = [
     path('cerrar-sesion/', views.cerrar_sesion, name='cerrar_sesion'),
     path('perfil/', views.perfil, name='perfil'),
     path('leer_archivo/', views.leer_archivo, name='leer_archivo'),
+    path('eliminar_perfil/', views.eliminar_perfil, name='eliminar_perfil'),
+    path('registro_usuarios/', views.registro_usuarios, name='registro_usuarios'),
+    path('lista_presentacionesUsurario/', views.lista_presentacionesUsuario, name='lista_presentacionesUsuario'),
 ]
+

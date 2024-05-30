@@ -5,7 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de Usuario</title>
     <style>
-        /* Estilos CSS para posicionar el botón en la esquina superior derecha */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+
+        .error-message {
+            color: red;
+            display: none;
+            margin-top: 5px;
+        }
+
         #boton_inicio {
             position: fixed;
             top: 20px;
@@ -14,24 +71,31 @@
     </style>
 </head>
 <body>
-    <h2>Perfil de Usuario</h2>
-    <form method="post" action="{% url 'perfil' %}">
-        {% csrf_token %}
-        <label for="id_username">Nombre de usuario:</label><br>
-        <input type="text" id="id_username" name="username" value="{{ user.username }}"><br><br>
-        <button type="button" onclick="mostrarContraseña()">Cambiar Contraseña</button>
-        <div id="contraseña" style="display:none;">
-            <label for="id_password1">Nueva Contraseña:</label><br>
-            <input type="password" id="id_password1" name="password1"><br><br>
-            <label for="id_password2">Confirmar Nueva Contraseña:</label><br>
-            <input type="password" id="id_password2" name="password2"><br><br>
-            <p id="mensaje_error" style="color:red; display:none;">Las contraseñas no coinciden.</p>
-        </div>
-        <button type="submit">Guardar Cambios</button>
-    </form>
+    <div class="container">
+        <h2>Perfil de Usuario</h2>
+        <form method="post" action="{% url 'perfil' %}">
+            {% csrf_token %}
+            <label for="id_username">Nombre de usuario:</label>
+            <input type="text" id="id_username" name="username" value="{{ user.username }}">
+            <button type="button" onclick="mostrarContraseña()">Cambiar Contraseña</button>
+            <div id="contraseña" style="display:none;">
+                <label for="id_password1">Nueva Contraseña:</label>
+                <input type="password" id="id_password1" name="password1">
+                <label for="id_password2">Confirmar Nueva Contraseña:</label>
+                <input type="password" id="id_password2" name="password2">
+                <p id="mensaje_error" class="error-message">Las contraseñas no coinciden.</p>
+            </div>
+            <button type="submit">Guardar Cambios</button>
+        </form>
+        <button id="eliminarPerfil">Eliminar Perfil</button>
+    </div>
 
     <!-- Botón para regresar a la página de inicio -->
+    {% if es_admin %}
+    <a id="boton_inicio" href="{% url 'administrador' %}"><button>Ir al panel de administrador</button></a>
+{% else %}
     <a id="boton_inicio" href="{% url 'inicio' %}"><button>Regresar a Inicio</button></a>
+{% endif %}
     
     <script>
         function mostrarContraseña() {
@@ -52,6 +116,29 @@
                 event.preventDefault(); // Evitar el envío del formulario
             }
         });
+
+
+        document.getElementById("eliminarPerfil").addEventListener("click", function() {
+        if (confirm("¿Estás seguro de que quieres eliminar tu perfil?")) {
+            fetch('{% url "eliminar_perfil" %}', {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Perfil eliminado correctamente");
+                    window.location.href = "{% url 'homepage' %}";
+                } else {
+                    console.error('Error al eliminar el perfil');
+                }
+            })
+            .catch(error => {
+                console.error('Error al eliminar el perfil:', error);
+            });
+        }
+    });
     </script>
 </body>
 </html>

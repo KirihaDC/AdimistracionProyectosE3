@@ -57,6 +57,21 @@
             bottom: 0;
             width: 100%;
         }
+        .button {
+        display: inline-block;
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        text-align: center;
+        font-size: 16px;
+        padding: 10px 24px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .button:hover {
+        background-color: #45a049;
+    }
     </style>
 </head>
 <body>
@@ -64,14 +79,7 @@
         <h1>Mi Sitio Web</h1>
     </header>
     <div class="container">
-        <nav>
-            <ul>
-                <li><a href="#">Inicio</a></li>
-                <li><a href="#">Acerca de</a></li>
-                <li><a href="#">Servicios</a></li>
-                <li><a href="#">Ayuda</a></li>
-            </ul>
-        </nav>
+        <a class="btn btn-back" href="{% url 'administrador' %}">Regresar</a>
         <!--- NOTA: TENER EN CUENTA QUE ESTA PAGINA NADAMAS PUEDE SER ACCEDIDA POR EL ADMINISTRADOR-->
         <section>
             <h2>Ayuda</h2>
@@ -135,27 +143,3 @@
                     <li> "Green" = Color Verde </li>
                     <li> "Yllw" = Color Amarillo </li>
                     <li> "Black" = Color Negro </li>
-                    <li> "Orge" = Color Naranja </li>
-                    <li> "Brwn" = Color Cafe </li>
-                </ol>
-                <br>
-                <h4>Hacer un subtítulo</h4>
-                Para definir un subtítulo en una diapositiva usa <em>[ingresar simbolo(s)]</em>, similar a cómo funciona un título
-                ya que hace que todo lo de una línea sea un subtítulo, por ejemplo: [ingresar simbolo(s)] Esto de aquí es un subtítulo
-                <br>
-                <h4>Cambiar fuente (Aún en discusión)</h4>
-                La función de cambiar fuente aún se mantiene en discución, si esta resulta ser posible para su uso, aquí pondremos
-                la información.
-                <br>
-                <b><em>¿Tienes dudas? <p href="#">¡Contactános!</p></em></b>
-            </p>
-            <br>
-            <br>
-
-        </section>
-    </div>
-    <footer>
-        <p>Derechos de autor &copy; 2024 Mi Sitio Web</p>
-    </footer>
-</body>
-</html>

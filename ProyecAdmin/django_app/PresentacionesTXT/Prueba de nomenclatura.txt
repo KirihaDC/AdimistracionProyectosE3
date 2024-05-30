@@ -1,0 +1,6 @@
+<Titulo>Prueba de nomenclatura 1</Titulo>
+Prueba numero 1
+Prueba de contenido
+
+<Titulo>Prueba de nomenclatura 2</Titulo>
+Prueba numero 2

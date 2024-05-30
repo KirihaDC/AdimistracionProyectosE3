@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Presentación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #contenido {
+            width: 80%;
+            text-align: center;
+        }
+
+        label {
+            font-size: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #007bff; /* Cambiar color del borde cuando está enfocado */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Efecto de sombra cuando está enfocado */
+        }
+
+        textarea {
+            padding: 10px;
+            font-size: 14px;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            resize: none;
+        }
+
+        textarea#contenidoPresentacion {
+            height: 300px; /* Tamaño más pequeño */
+        }
+
+        button, .btn-back {
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-back {
+            background-color: #ccc;
+            color: #000;
+        }
+
+        .btn-back:hover {
+            background-color: #999;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <div id="contenido">
+        <h1>Editar Presentación</h1>
+        <form id="formularioPresentacion" action="{% url 'editar_presentacion' %}?archivo={{ nombre_archivo }}" method="post">
+            {% csrf_token %}
+            <label for="tituloPresentacion">Título de la presentación:</label><br>
+            <input type="text" id="tituloPresentacion" name="tituloPresentacion" value="{{ titulo }}"><br>
+            <label for="contenidoPresentacion">Contenido de la presentación:</label><br>
+            <textarea id="contenidoPresentacion" name="contenidoPresentacion" placeholder="Escribe tu presentación aquí..." rows="10">{{ contenido }}</textarea><br>
+            <button type="submit">Guardar Cambios</button>
+            <a href="{% url 'lista_presentaciones' %}" class="btn-back">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>
