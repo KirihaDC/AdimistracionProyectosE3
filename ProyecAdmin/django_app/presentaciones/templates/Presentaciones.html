@@ -1,9 +1,12 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presentaciones</title>
+    <link rel="stylesheet" href="{% static 'markdownx/css/markdownx.css' %}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -122,6 +125,14 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+        #preview {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -161,7 +172,8 @@
                 <option value="Comic Sans MS">Comic Sans MS</option>
                 <option value="Papyrus">Papyrus</option>
              </select><br>  
-            <textarea id="contenidoPresentacion" name="contenidoPresentacion" placeholder="Escribe tu presentación aquí..." onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }">{{ file_content }}</textarea>
+            <textarea id="contenidoPresentacion" name="contenidoPresentacion" class="markdownx-editor" placeholder="Escribe tu presentación aquí..." oninput="updatePreview()" onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }">{{ file_content }}</textarea>
+            <div id="preview"></div>
             {{ form.as_p }}
             <label for="file">Subir archivo (.md, .txt):</label>
             <input type="file" id="file" name="file" accept=".md,.txt">
@@ -178,7 +190,11 @@
         </div>
     </div>
 
+    <script src="{% static 'markdownx/js/markdownx.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
     <script>
+        var md = window.markdownit();
+
         document.getElementById("generarPresentacion").addEventListener("click", function() {
             var form = document.getElementById("formularioPresentacion");
             form.submit(); // Envía el formulario de manera estándar
@@ -205,27 +221,28 @@
             };
         }
 
-        //asigna una fuente a un archivo
+        // Asigna una fuente a un archivo
         function writefontdata(){
-                var selectedFont = document.getElementById("selectorfuentes").value;
-                console.log("La fuente actual es: "+String(selectedFont));
-                var textareafield = document.getElementById("contenidoPresentacion");
-                var fontspec = "&~".concat(" ",selectedFont);
-                var content = textareafield.value;
-                var fontdefindex = console.log(content.indexOf("&"))
+            var selectedFont = document.getElementById("selectorfuentes").value;
+            console.log("La fuente actual es: "+String(selectedFont));
+            var textareafield = document.getElementById("contenidoPresentacion");
+            var fontspec = "&~".concat(" ",selectedFont);
+            var content = textareafield.value;
+            var fontdefindex = console.log(content.indexOf("&"))
 
-                //verifica que no haya una definicion de la fuente anteriormente
-                if (content.indexOf("&") == 0){
-                    //cambia la primera linea por una kk aca chafa para definir el tipo de fuente nuevo.
-                    console.log("I shat my pants");
-                    content = content.substring(content.indexOf("\n") + 1);
-                } else {
-                    //si no ps se hace wei y no hace nada
-                    content = content;
-                }
-                //cambia el valor del texto seleccionado
-                textareafield.value = fontspec + "\n" + content;
+            // Verifica que no haya una definicion de la fuente anteriormente
+            if (content.indexOf("&") == 0){
+                // Cambia la primera linea por una kk aca chafa para definir el tipo de fuente nuevo.
+                console.log("I shat my pants");
+                content = content.substring(content.indexOf("\n") + 1);
+            } else {
+                // Si no ps se hace wei y no hace nada
+                content = content;
             }
+            // Cambia el valor del texto seleccionado
+            textareafield.value = fontspec + "\n" + content;
+            updatePreview();
+        }
 
         // Leer el contenido del archivo y cargarlo en el textarea
         document.getElementById('file').addEventListener('change', function(e) {
@@ -235,6 +252,7 @@
                 reader.onload = function(e) {
                     var contents = e.target.result;
                     document.getElementById('contenidoPresentacion').value = contents;
+                    updatePreview();
                 };
                 reader.readAsText(file);
             }
@@ -246,7 +264,14 @@
             if (mensaje) {
                 mostrarMensaje(mensaje);
             }
+            updatePreview();
         });
+
+        // Actualizar la previsualización del contenido Markdown
+        function updatePreview() {
+            var contenido = document.getElementById('contenidoPresentacion').value;
+            document.getElementById('preview').innerHTML = md.render(contenido);
+        }
     </script>
 </body>
 </html>
