@@ -165,15 +165,23 @@ def register(request):
         nombre_usuario = request.POST['nombre_usuario']
         contraseña = request.POST['contraseña']
         confirmar_contraseña = request.POST['confirmar_contraseña']
+        
         # Verificar si las contraseñas coinciden
         if contraseña != confirmar_contraseña:
             messages.error(request, 'Las contraseñas no coinciden')
             return redirect('registro')
+        
+        # Verificar si el nombre de usuario ya existe
+        if User.objects.filter(username=nombre_usuario).exists():
+            messages.error(request, 'El nombre de usuario ya está en uso')
+            return redirect('registro')
+        
         # Crear un nuevo usuario
         user = User.objects.create_user(username=nombre_usuario, email=correo, password=contraseña)
         user.save()
         messages.success(request, 'Usuario registrado exitosamente')
         return redirect('homepage')
+    
     return render(request, 'registro.html')
 
 @user_passes_test(es_admin)

@@ -149,6 +149,18 @@
             <label for="tituloPresentacion">Título de la presentación:</label>
             <textarea id="tituloPresentacion" name="tituloPresentacion" placeholder="Escribe tu título aquí..." onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }">{{ titulo }}</textarea>
             <label for="contenidoPresentacion">Contenido de la presentación:</label>
+            <!--aqui va el selector de fuentes-->
+            <label for="selectorfuentes">Fuente:</label>
+            <select id="selectorfuentes" onchange="writefontdata();">
+                <option value="Arial">Arial</option>
+                <option value="Courrier">Courrier</option>
+                <option value="Tw Cen MT">Tw Cen MT</option>
+                <option value="Impact">Impact</option>
+                <option value="Franklin Gothic">Franklin Gothic</option>
+                <option value="Calibri">Calibri</option>
+                <option value="Comic Sans MS">Comic Sans MS</option>
+                <option value="Papyrus">Papyrus</option>
+             </select><br>  
             <textarea id="contenidoPresentacion" name="contenidoPresentacion" placeholder="Escribe tu presentación aquí..." onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }">{{ file_content }}</textarea>
             {{ form.as_p }}
             <label for="file">Subir archivo (.md, .txt):</label>
@@ -192,6 +204,28 @@
                 }
             };
         }
+
+        //asigna una fuente a un archivo
+        function writefontdata(){
+                var selectedFont = document.getElementById("selectorfuentes").value;
+                console.log("La fuente actual es: "+String(selectedFont));
+                var textareafield = document.getElementById("contenidoPresentacion");
+                var fontspec = "&~".concat(" ",selectedFont);
+                var content = textareafield.value;
+                var fontdefindex = console.log(content.indexOf("&"))
+
+                //verifica que no haya una definicion de la fuente anteriormente
+                if (content.indexOf("&") == 0){
+                    //cambia la primera linea por una kk aca chafa para definir el tipo de fuente nuevo.
+                    console.log("I shat my pants");
+                    content = content.substring(content.indexOf("\n") + 1);
+                } else {
+                    //si no ps se hace wei y no hace nada
+                    content = content;
+                }
+                //cambia el valor del texto seleccionado
+                textareafield.value = fontspec + "\n" + content;
+            }
 
         // Leer el contenido del archivo y cargarlo en el textarea
         document.getElementById('file').addEventListener('change', function(e) {

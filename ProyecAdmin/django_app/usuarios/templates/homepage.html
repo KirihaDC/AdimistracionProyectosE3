@@ -317,8 +317,8 @@ input[type=password]::placeholder {
             <!-- Login Form -->
             <form action="{% url 'homepage' %}" method="post" id="loginForm">
               {% csrf_token %}
-              <input type="text" id="nombre_usuario" class="fadeIn second" name="nombre_usuario" placeholder="Usuario">
-              <input type="password" id="contraseña" class="fadeIn third" name="contraseña" placeholder="Contraseña">
+              <input type="text" id="nombre_usuario" class="fadeIn second" name="nombre_usuario" placeholder="Usuario" required>
+              <input type="password" id="contraseña" class="fadeIn third" name="contraseña" placeholder="Contraseña" required>
               <input type="submit" class="fadeIn fourth" value="Iniciar Sesión">
             </form>
 

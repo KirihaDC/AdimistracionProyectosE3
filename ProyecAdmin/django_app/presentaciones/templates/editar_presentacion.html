@@ -94,10 +94,45 @@
             <label for="tituloPresentacion">Título de la presentación:</label><br>
             <input type="text" id="tituloPresentacion" name="tituloPresentacion" value="{{ titulo }}"><br>
             <label for="contenidoPresentacion">Contenido de la presentación:</label><br>
+            <!--aqui va el selector de fuentes-->
+            <label for="selectorfuentes">Fuente:</label>
+            <select id="selectorfuentes" onchange="writefontdata();">
+                <option value="Arial">Arial</option>
+                <option value="Courrier">Courrier</option>
+                <option value="Tw Cen MT">Tw Cen MT</option>
+                <option value="Impact">Impact</option>
+                <option value="Franklin Gothic">Franklin Gothic</option>
+                <option value="Calibri">Calibri</option>
+                <option value="Comic Sans MS">Comic Sans MS</option>
+                <option value="Papyrus">Papyrus</option>
+             </select><br>   
             <textarea id="contenidoPresentacion" name="contenidoPresentacion" placeholder="Escribe tu presentación aquí..." rows="10">{{ contenido }}</textarea><br>
             <button type="submit">Guardar Cambios</button>
             <a href="{% url 'lista_presentaciones' %}" class="btn-back">Cancelar</a>
         </form>
+        <!-- Escribe el texto del font-->
+        <script>
+            function writefontdata(){
+                var selectedFont = document.getElementById("selectorfuentes").value;
+                console.log("La fuente actual es: "+String(selectedFont));
+                var textareafield = document.getElementById("contenidoPresentacion");
+                var fontspec = "&~".concat(" ",selectedFont);
+                var content = textareafield.value;
+                var fontdefindex = console.log(content.indexOf("&"))
+
+                //verifica que no haya una definicion de la fuente anteriormente
+                if (content.indexOf("&") == 0){
+                    //cambia la primera linea por una kk aca chafa para definir el tipo de fuente nuevo.
+                    console.log("I shat my pants");
+                    content = content.substring(content.indexOf("\n") + 1);
+                } else {
+                    //si no ps se hace wei y no hace nada
+                    content = content;
+                }
+                //cambia el valor del texto seleccionado
+                textareafield.value = fontspec + "\n" + content;
+            }
+        </script>
     </div>
 </body>
 </html>
