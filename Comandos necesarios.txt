@@ -1,0 +1,39 @@
+### Para instalar Django
+
+pip install django
+
+### Para crear proyecto nuevo
+
+django-admin startproject myproject
+
+Nota: Una vez creado el proyecto entrar a la carpeta donde se creo el proyecto, en este ejemplo es myproyect
+cd myproject
+
+### Para crear una aplicacion en Django y carpetas de separacion
+
+python manage.py startapp usuarios
+
+### Para ejecutar los requerimientos del proyecto (Ya debe estar creado el requirements)
+
+pip freeze > requirements.txt
+
+-------------------------------------------------------------------------------------------
+### Para crear el proyecto
+
+docker-compose up -d --build
+
+### Para arrancar el docker
+
+docker-compose exec web bash
+
+### Ya dentro del proyecto ejecutar lo siguiente
+
+python manage.py runserver 0.0.0.0:8080 /// Para correr el proyecto 
+
+python3 manage.py migrate ///para crear las migraciones
+
+python3 manage.py createsuperuser //es para crear un super usuario
+
+
+Nota: El Dockerfile y el requirements deben estar dentro de la carpeta del proyecto donde se encuentra el manage.py
+

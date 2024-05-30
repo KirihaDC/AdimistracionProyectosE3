@@ -9,21 +9,23 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: #f5f5f5;
+            overflow-x: hidden; /* Previene scroll horizontal no deseado */
         }
         
         #contenido {
-            width: 80%;
+            width: 90%;
             max-width: 800px;
             background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            margin: 20px; /* Añade margen para espaciamiento y mejor apariencia */
+            box-sizing: border-box;
         }
 
         label {
@@ -42,8 +44,16 @@
             box-sizing: border-box;
         }
 
-        textarea {
-            resize: none;
+        /* Estilos específicos para el textarea del título */
+        #tituloPresentacion {
+            height: 50px; /* Altura específica para el título */
+            resize: none; /* No permitir cambiar el tamaño */
+        }
+
+        /* Estilos específicos para el textarea del contenido */
+        #contenidoPresentacion {
+            height: 300px; /* Altura específica para el contenido */
+            resize: vertical; /* Permitir cambiar el tamaño verticalmente */
         }
 
         button, .btn-back {
@@ -206,8 +216,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
