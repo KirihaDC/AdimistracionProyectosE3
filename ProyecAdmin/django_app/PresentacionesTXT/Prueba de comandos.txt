@@ -1,12 +1,13 @@
+<Titulo> hola </Titulo>
 % Este es el primer párrafo.
 
-% Este es el segundo párrafo.
+% Este es el <Orge>segundo</Orge> párrafo.
 
 --
 
 # Otro Título Principal
-% Este es el primer párrafo del segundo título.
+% Este es el <Green>primer párrafo</Green> del segundo título.
 
-% Este es el segundo párrafo del segundo título.
+% Este es el <Yllw>segundo párrafo</Yllw> del segundo título.
 
 --

@@ -120,16 +120,16 @@
 
              <!-- Selector de colores -->
             <label for="selectorcolores">Color:</label>
-            <select id="selectorcolores" onchange="changeColor();">
-                <option value="" disabled selected>Selecciona un color</option>
-                <option class="red" value="Red">Rojo</option>
-                <option class="blue" value="Blue">Azul</option>
-                <option class="green" value="Green">Verde</option>
-                <option class="yellow" value="Yllw">Amarillo</option>
-                <option class="black" value="Black">Negro</option>
-                <option class="orange" value="Orge">Naranja</option>
-                <option class="brown" value="Brwn">Cafe</option>
-            </select><br>
+                    <select id="selectorcolores" onchange="changeColor();">
+                        <option value="" disabled selected>Selecciona un color</option>
+                        <option class="red" value="red">Rojo</option>
+                        <option class="blue" value="blue">Azul</option>
+                        <option class="green" value="green">Verde</option>
+                        <option class="yellow" value="yellow">Amarillo</option>
+                        <option class="black" value="black">Negro</option>
+                        <option class="orange" value="orange">Naranja</option>
+                        <option class="brown" value="brown">Cafe</option>
+                    </select><br>
 
             <textarea id="contenidoPresentacion" name="contenidoPresentacion" placeholder="Escribe tu presentación aquí..." rows="10">{{ contenido }}</textarea><br>
             <button type="submit">Guardar Cambios</button>
@@ -175,7 +175,7 @@
 
                 // Cambia el color del texto seleccionado
                 var selectedText = textarea.value.substring(start, end);
-                var coloredText = `<${selectedColor}>${selectedText}</${selectedColor}>`;
+                var coloredText = `<span style="color: ${selectedColor};">${selectedText}</span>`;
                 textarea.value = textarea.value.substring(0, start) + coloredText + textarea.value.substring(end);
 
                 // Deselecciona el texto después de cambiar el color

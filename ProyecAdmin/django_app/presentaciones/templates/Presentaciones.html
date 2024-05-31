@@ -132,7 +132,6 @@
             border-radius: 5px;
             background-color: #f9f9f9;
             margin-top: 20px;
-            white-space: pre-wrap;
         }
 
         /* Select */
@@ -205,13 +204,13 @@
                     <label for="selectorcolores">Color:</label>
                     <select id="selectorcolores" onchange="changeColor();">
                         <option value="" disabled selected>Selecciona un color</option>
-                        <option class="red" value="Red">Rojo</option>
-                        <option class="blue" value="Blue">Azul</option>
-                        <option class="green" value="Green">Verde</option>
-                        <option class="yellow" value="Yllw">Amarillo</option>
-                        <option class="black" value="Black">Negro</option>
-                        <option class="orange" value="Orge">Naranja</option>
-                        <option class="brown" value="Brwn">Cafe</option>
+                        <option class="red" value="red">Rojo</option>
+                        <option class="blue" value="blue">Azul</option>
+                        <option class="green" value="green">Verde</option>
+                        <option class="yellow" value="yellow">Amarillo</option>
+                        <option class="black" value="black">Negro</option>
+                        <option class="orange" value="orange">Naranja</option>
+                        <option class="brown" value="brown">Cafe</option>
                     </select>
                 </div>
             </div>
@@ -237,7 +236,9 @@
     <script src="{% static 'markdownx/js/markdownx.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
     <script>
-        var md = window.markdownit();
+        var md = window.markdownit({
+            html: true
+        });
 
         document.getElementById("generarPresentacion").addEventListener("click", function() {
             var form = document.getElementById("formularioPresentacion");
@@ -306,7 +307,7 @@
 
                 // Cambia el color del texto seleccionado
                 var selectedText = textarea.value.substring(start, end);
-                var coloredText = `<${selectedColor}>${selectedText}</${selectedColor}>`;
+                var coloredText = `<span style="color: ${selectedColor};">${selectedText}</span>`;
                 textarea.value = textarea.value.substring(0, start) + coloredText + textarea.value.substring(end);
 
                 // Deselecciona el texto después de cambiar el color
@@ -341,7 +342,8 @@
         // Actualizar la previsualización del contenido Markdown
         function updatePreview() {
             var contenido = document.getElementById('contenidoPresentacion').value;
-            document.getElementById('preview').innerHTML = md.render(contenido);
+            var html = md.render(contenido);
+            document.getElementById('preview').innerHTML = html;
         }
     </script>
 </body>

@@ -1,0 +1,6 @@
+# Este es un <span style="color: red;">titulo</span>
+
+## <span style="color: blue;">Hola este es un subtitulo azul</span>
+
+<span style="color: orange;">**Hola**</span>
+<span style="color: yellow;">Hola</span>

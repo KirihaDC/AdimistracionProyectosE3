@@ -3,9 +3,9 @@ iniciae docoker..
 (si tienes fallas intenta reiniciar el doker)
 -> cd //dirijete al proyecto
 -> docker-compose down -v //solo usar en caso de que no abra los servicios
--> docker-compose down //cierra el proyecto
+-> docker-compose down //c<Blue>ierra el proyecto
 -> docker-compose up -d --build //crea todo
--> docker-compose exec app bash //arranca doker
+-> docker-compose exec app bash //arranca doker</Blue>
 
 ya estando adentro
 (te ouedes dirijir a donde tengas tu proyecto)
