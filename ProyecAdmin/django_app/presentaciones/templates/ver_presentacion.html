@@ -75,26 +75,40 @@
     <div class="container">
         {% for titulo, parrafos in diapositivas %}
             <div class="slide">
-                {{ titulo|safe }}
+                <div class="titulo">{{ titulo|safe }}</div>
                 <br>
                 {% for parrafo in parrafos %}
-                    {{ parrafo|safe }}
+                    <div class="parrafo">{{ parrafo|safe }}</div>
                 {% endfor %}
             </div>
         {% endfor %}
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
     <script>
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
+        const md = window.markdownit();
 
         function showSlide(index) {
             slides.forEach((slide, i) => {
                 if (i === index) {
                     slide.classList.add('current-slide');
+                    renderMarkdown(slide);
                 } else {
                     slide.classList.remove('current-slide');
                 }
+            });
+        }
+
+        function renderMarkdown(slide) {
+            const tituloElem = slide.querySelector('.titulo');
+            const parrafosElem = slide.querySelectorAll('.parrafo');
+
+            tituloElem.innerHTML = md.render(tituloElem.textContent.trim());
+
+            parrafosElem.forEach(parrafo => {
+                parrafo.innerHTML = md.render(parrafo.textContent.trim());
             });
         }
 
@@ -119,20 +133,16 @@
 
         // Control con la rueda del mouse.
         document.addEventListener('wheel', (event) => {
-        if (event.deltaY > 0) {
-            nextSlide();
-        } else if (event.deltaY < 0) {
-            prevSlide();
-        }
+            if (event.deltaY > 0) {
+                nextSlide();
+            } else if (event.deltaY < 0) {
+                prevSlide();
+            }
         });
 
         document.addEventListener('DOMContentLoaded', function() {
             showSlide(0);
         });
-
-
-
     </script>
-
 </body>
 </html>
