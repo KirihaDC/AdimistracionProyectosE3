@@ -132,6 +132,29 @@
             border-radius: 5px;
             background-color: #f9f9f9;
             margin-top: 20px;
+            white-space: pre-wrap;
+        }
+
+        /* Select */
+        #selectsambos {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .selectsambos {
+            display: flex;
+            align-items: center;
+        }
+
+        #selectorcolores, #selectorfuentes {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -160,18 +183,39 @@
             <label for="tituloPresentacion">Título de la presentación:</label>
             <textarea id="tituloPresentacion" name="tituloPresentacion" placeholder="Escribe tu título aquí..." onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }">{{ titulo }}</textarea>
             <label for="contenidoPresentacion">Contenido de la presentación:</label>
-            <!--aqui va el selector de fuentes-->
-            <label for="selectorfuentes">Fuente:</label>
-            <select id="selectorfuentes" onchange="writefontdata();">
-                <option value="Arial">Arial</option>
-                <option value="Courrier">Courrier</option>
-                <option value="Tw Cen MT">Tw Cen MT</option>
-                <option value="Impact">Impact</option>
-                <option value="Franklin Gothic">Franklin Gothic</option>
-                <option value="Calibri">Calibri</option>
-                <option value="Comic Sans MS">Comic Sans MS</option>
-                <option value="Papyrus">Papyrus</option>
-             </select><br>  
+
+            <div id="selectsambos">
+                <!--aqui va el selector de fuentes-->
+                <div class="selectsambos">
+                    <label for="selectorfuentes">Fuente:</label>
+                    <select id="selectorfuentes" onchange="writefontdata();">
+                        <option value="Arial">Arial</option>
+                        <option value="Courrier">Courrier</option>
+                        <option value="Tw Cen MT">Tw Cen MT</option>
+                        <option value="Impact">Impact</option>
+                        <option value="Franklin Gothic">Franklin Gothic</option>
+                        <option value="Calibri">Calibri</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                        <option value="Papyrus">Papyrus</option>
+                    </select>
+                </div>
+
+                <!-- Selector de colores -->
+                <div class="selectsambos">
+                    <label for="selectorcolores">Color:</label>
+                    <select id="selectorcolores" onchange="changeColor();">
+                        <option value="" disabled selected>Selecciona un color</option>
+                        <option class="red" value="Red">Rojo</option>
+                        <option class="blue" value="Blue">Azul</option>
+                        <option class="green" value="Green">Verde</option>
+                        <option class="yellow" value="Yllw">Amarillo</option>
+                        <option class="black" value="Black">Negro</option>
+                        <option class="orange" value="Orge">Naranja</option>
+                        <option class="brown" value="Brwn">Cafe</option>
+                    </select>
+                </div>
+            </div>
+
             <textarea id="contenidoPresentacion" name="contenidoPresentacion" class="markdownx-editor" placeholder="Escribe tu presentación aquí..." oninput="updatePreview()" onkeydown="if (event.keyCode == 13) { this.value += '\n'; return false; }">{{ file_content }}</textarea>
             <div id="preview"></div>
             {{ form.as_p }}
@@ -243,6 +287,33 @@
             textareafield.value = fontspec + "\n" + content;
             updatePreview();
         }
+
+        // Cambia el color de la fuente
+        function changeColor() {
+                // Toma el valor del checkbox
+                var selectedColor = document.getElementById("selectorcolores").value;
+
+                // Toma el contendio del textarea
+                var textarea = document.getElementById('contenidoPresentacion');
+
+                // Toma el texto seleccionado
+                var start = textarea.selectionStart;
+                var end = textarea.selectionEnd;
+                if (start === end) {
+                    alert('Por favor selecciona el texto que deseas cambiar de color.');
+                    return;
+                }
+
+                // Cambia el color del texto seleccionado
+                var selectedText = textarea.value.substring(start, end);
+                var coloredText = `<${selectedColor}>${selectedText}</${selectedColor}>`;
+                textarea.value = textarea.value.substring(0, start) + coloredText + textarea.value.substring(end);
+
+                // Deselecciona el texto después de cambiar el color
+                textarea.setSelectionRange(start + coloredText.length, start + coloredText.length);
+                textarea.focus();
+                updatePreview();
+            }
 
         // Leer el contenido del archivo y cargarlo en el textarea
         document.getElementById('file').addEventListener('change', function(e) {

@@ -82,11 +82,22 @@
         .btn-back:hover {
             background-color: #999;
         }
+
+        /* Select */
+        #selectorcolores, #selectorfuentes {
+            width: flex;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 
 <body>
-    
+
     <div id="contenido">
         <h1>Editar Presentación</h1>
         <form id="formularioPresentacion" action="{% url 'editar_presentacion' %}?archivo={{ nombre_archivo }}" method="post">
@@ -105,7 +116,21 @@
                 <option value="Calibri">Calibri</option>
                 <option value="Comic Sans MS">Comic Sans MS</option>
                 <option value="Papyrus">Papyrus</option>
-             </select><br>   
+             </select>
+
+             <!-- Selector de colores -->
+            <label for="selectorcolores">Color:</label>
+            <select id="selectorcolores" onchange="changeColor();">
+                <option value="" disabled selected>Selecciona un color</option>
+                <option class="red" value="Red">Rojo</option>
+                <option class="blue" value="Blue">Azul</option>
+                <option class="green" value="Green">Verde</option>
+                <option class="yellow" value="Yllw">Amarillo</option>
+                <option class="black" value="Black">Negro</option>
+                <option class="orange" value="Orge">Naranja</option>
+                <option class="brown" value="Brwn">Cafe</option>
+            </select><br>
+
             <textarea id="contenidoPresentacion" name="contenidoPresentacion" placeholder="Escribe tu presentación aquí..." rows="10">{{ contenido }}</textarea><br>
             <button type="submit">Guardar Cambios</button>
             <a href="{% url 'lista_presentaciones' %}" class="btn-back">Cancelar</a>
@@ -131,6 +156,31 @@
                 }
                 //cambia el valor del texto seleccionado
                 textareafield.value = fontspec + "\n" + content;
+            }
+
+            function changeColor() {
+                // Toma el valor del checkbox
+                var selectedColor = document.getElementById("selectorcolores").value;
+
+                // Toma el contendio del textarea
+                var textarea = document.getElementById('contenidoPresentacion');
+
+                // Toma el texto seleccionado
+                var start = textarea.selectionStart;
+                var end = textarea.selectionEnd;
+                if (start === end) {
+                    alert('Por favor selecciona el texto que deseas cambiar de color.');
+                    return;
+                }
+
+                // Cambia el color del texto seleccionado
+                var selectedText = textarea.value.substring(start, end);
+                var coloredText = `<${selectedColor}>${selectedText}</${selectedColor}>`;
+                textarea.value = textarea.value.substring(0, start) + coloredText + textarea.value.substring(end);
+
+                // Deselecciona el texto después de cambiar el color
+                textarea.setSelectionRange(start + coloredText.length, start + coloredText.length);
+                textarea.focus();
             }
         </script>
     </div>
