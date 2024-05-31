@@ -270,32 +270,43 @@ def leer_archivo(request):
             for linea in archivo:
                 linea = linea.strip()
 
-                if linea.startswith('<Titulo>') and linea.endswith('</Titulo>'):
-                    titulo_actual = f'<strong style="font-size: larger;">{linea[8:-9]}</strong>'  # Quitar etiquetas <Titulo> y </Titulo>
-                    titulo_actual += f'<span style="float: right; font-size: smaller;">Página {numero_pagina}</span>'
-                    numero_pagina += 1
+                font_changed = False;
+                #robarse el texto que indica la fuente
+                if linea.startswith('&~ '):
+                    name = linea[3:]
+                    #nadamas para verificar
+                    #contenido_actual.append(f'<p>{path}</p>')
+                    contenido_actual.append(f'<font face="{name}">')
+                    font_changed = True;
                 else:
-                    # Buscar y reemplazar las etiquetas de color con el código CSS correspondiente
-                    colores = {
-                        'Red': 'color: red;',
-                        'Blue': 'color: blue;',
-                        'Green': 'color: green;',
-                        'Yllw': 'color: yellow;',
-                        'Black': 'color: black;',
-                        'Orge': 'color: orange;',
-                        'Brwn': 'color: brown;'
-                    }
-                    for color, style in colores.items():
-                        linea = linea.replace(f'<{color}>', f'<span style="{style}">').replace(f'</{color}>', '</span>')
+                    if linea.startswith('<Titulo>') and linea.endswith('</Titulo>'):
+                        titulo_actual = f'<strong style="font-size: larger;">{linea[8:-9]}</strong>'  # Quitar etiquetas <Titulo> y </Titulo>
+                        titulo_actual += f'<span style="float: right; font-size: smaller;">Página {numero_pagina}</span>'
+                        numero_pagina += 1
+                    else:
+                        # Buscar y reemplazar las etiquetas de color con el código CSS correspondiente
+                        colores = {
+                            'Red': 'color: red;',
+                            'Blue': 'color: blue;',
+                            'Green': 'color: green;',
+                            'Yllw': 'color: yellow;',
+                            'Black': 'color: black;',
+                            'Orge': 'color: orange;',
+                            'Brwn': 'color: brown;'
+                        }
+                        for color, style in colores.items():
+                            linea = linea.replace(f'<{color}>', f'<span style="{style}">').replace(f'</{color}>', '</span>')
+                        contenido_actual.append(f'<p>{linea}</p>')
 
-                    contenido_actual.append(f'<p>{linea}</p>')
+                        if not linea or len(linea.strip()) == 0:
+                            if (font_changed == True):
+                                contenido_actual.append(f'</font>')
+                            else:
+                                diapositivas.append((titulo_actual, contenido_actual))
+                                titulo_actual = ''
+                                contenido_actual = []
 
-                if not linea or len(linea.strip()) == 0:
-                    diapositivas.append((titulo_actual, contenido_actual))
-                    titulo_actual = ''
-                    contenido_actual = []
-
-    if titulo_actual or contenido_actual:
-        diapositivas.append((titulo_actual, contenido_actual))
+            if titulo_actual or contenido_actual:
+                diapositivas.append((titulo_actual, contenido_actual))
 
     return render(request, 'archivoTexto.html', {'diapositivas': diapositivas})

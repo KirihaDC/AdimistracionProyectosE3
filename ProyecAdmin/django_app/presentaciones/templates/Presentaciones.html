@@ -270,7 +270,27 @@
         // Actualizar la previsualización del contenido Markdown
         function updatePreview() {
             var contenido = document.getElementById('contenidoPresentacion').value;
-            document.getElementById('preview').innerHTML = md.render(contenido);
+            var font = document.getElementById('selectorfuentes').value;
+            //verificar la fuente usada
+            if ((contenido.indexOf("&") == 0) && (contenido.indexOf("~") == 1) && (contenido.indexOf(" ") == 2)){
+                //elimina la primera linea para renderizar el contenido 
+                contenido = eliminarprimeralinea(contenido);
+            }
+            var contenidomarkdown = md.render(contenido);
+            var contenidoFuente = `<div style="font-family: ${font};">${contenidomarkdown}</div>`;
+            document.getElementById('preview').innerHTML = contenidoFuente;
+        }
+
+        function eliminarprimeralinea(texto){
+            //convertimos en arreglo
+            var texto_nuevo = texto.split('\n');
+            if (texto_nuevo.length > 1) {
+                //borramos la primera linea del arreglo
+                texto_nuevo.shift(); 
+            }
+            //reconstruimos el texto
+            var nuevo = texto_nuevo.join('\n');
+            return nuevo;
         }
     </script>
 </body>

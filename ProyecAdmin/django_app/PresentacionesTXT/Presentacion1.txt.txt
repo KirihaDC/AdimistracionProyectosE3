@@ -1,0 +1,7 @@
+&~ Comic Sans MS
+# titulo 1 
+## titulo 2
+normal \
+*italica* \
+**negrita** \
+***ambas***
